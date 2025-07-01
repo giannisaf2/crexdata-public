@@ -1,0 +1,59 @@
+{
+    "postprocessing": {
+        "input_fname":  "observables.nc",
+        "output_fname": "obs_agg.nc",
+        "remove_input": true,
+        "steps": [
+            {
+                "function": "aggregate_simulation",
+                "mapping_fname": "rosetta.csv"  
+            }
+        ]
+    },
+    "plot": {
+        "input_fname":  "obs_agg.nc",
+        "figures": [
+            {
+                "function": "plot_epivariables",
+                "fig_name": "new_deaths.png",
+                "parameters": {
+                    "epivar": "new_deaths",
+                    "obsdata_fname": "real_observables.nc",
+                    "smooth_obs": true,
+                    "scale_by_pop": true,
+                    "excluded_regions": ["51", "52"]
+                }
+            },
+            {
+                "function": "plot_epivariables",
+                "fig_name": "new_hospitalized.png",
+                "parameters": {
+                    "epivar": "new_hospitalized",
+                    "obsdata_fname": "real_observables.nc",
+                    "smooth_obs": true,
+                    "scale_by_pop": true,
+                    "excluded_regions": ["51", "52"]
+                }
+            }
+        ]
+    },
+    "evaluation": {
+		"function": "fit_epicurves",
+		"input_fname": "obs_agg.nc",
+		"parameters":{
+			"obsdata_fname": "real_observables.nc",
+			"epivariable_weights": {
+                "new_infected":0.0, 
+                "new_hospitalized": 0.01, 
+                "new_deaths":0.99
+            },
+			"agg_level" : "level_2",
+            "metric": "rmse",
+            "smooth_obs": true,
+            "scale_by_pop": true,
+            "agg_func": "sum",
+            "weight_by_population": false,
+            "scale_factor": 1e5
+		}
+    }
+}

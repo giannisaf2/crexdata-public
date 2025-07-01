@@ -1,0 +1,114 @@
+[
+	{
+		"name": "epidemic_params.βᴵ", 
+		"type": "float",
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.βᴬ", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.ηᵍY", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.ηᵍM", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.ηᵍO", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.αᵍY", 
+		"type": "float",
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.αᵍM", 
+		"type": "float",
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.αᵍO", 
+		"type": "float",
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.μᵍY", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.μᵍM", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.μᵍO", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.γᵍY", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.γᵍM", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "epidemic_params.γᵍO", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "NPI.δs", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	},
+	{
+		"name": "NPI.ϕs", 
+		"type": "float", 
+		"lower": 0.0,
+		"upper": 1.0,
+		"sigma": 0.1
+	}
+]
