@@ -25,6 +25,7 @@
     "strategy": {
       "name": "FedAdam",
       "fda": false,
+      "theta": "",
       "eta": 0.0001
     }
   },
