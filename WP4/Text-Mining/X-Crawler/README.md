@@ -62,6 +62,7 @@ Finally, rename docker-compose-example.yml to docker-compose.yml
 
 ## Usage
 Build and Run Crawler Container:
+
 To Run the container after setup run this command. The ```--build``` parameter is only required on the first run or if you make changes to the Dockerfile
 ```bash
 docker-compose up --build -d
