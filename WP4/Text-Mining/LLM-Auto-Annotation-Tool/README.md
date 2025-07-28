@@ -15,7 +15,7 @@ These labels are synthetic and should be reviewed before using them to train any
 
 ## Requirements
 - Python
-- A HuggingFace instruction tuned model. Suggest: [Gemma 3 4B](https://huggingface.co/google/gemma-3-4b-it)
+- A HuggingFace instruction tuned model. Suggestion: [Gemma 3 4B](https://huggingface.co/google/gemma-3-4b-it)
 - A HuggingFace sentence transformer model for text embedding. Suggestion: [BGE-M3](https://huggingface.co/BAAI/bge-m3)
 
 ## Setup
