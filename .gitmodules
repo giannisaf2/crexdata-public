@@ -10,3 +10,15 @@
 	path = WP2/use-cases/health-crisis/episim-rl
 	url = https://github.com/Epi-Sim/episim-rl
 	branch = main
+[submodule "WP2/simulators/MMCACovid19Vac.jl"]
+	path = WP2/simulators/MMCACovid19Vac.jl
+	url = https://github.com/Epi-Sim/MMCACovid19Vac.jl
+	branch = main
+[submodule "WP2/simulators/MMCAcovid19.jl"]
+	path = WP2/simulators/MMCAcovid19.jl
+	url = https://github.com/Epi-Sim/MMCAcovid19.jl
+	branch = master
+[submodule "WP2/use-cases/health-crisis/episim-models"]
+	path = WP2/use-cases/health-crisis/episim-models
+	url = https://github.com/Epi-Sim/episim-models/
+	branch = main
