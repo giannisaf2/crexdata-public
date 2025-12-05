@@ -1,0 +1,177 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://maven.rapidminer.com/content/groups/public/' }
+
+    }
+}
+
+plugins {
+    id 'com.rapidminer.extension' version '0.10.0'
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+extensionConfig {
+    name 'Streaming'
+    groupId = 'com.rapidminer.extension'
+
+    vendor = "RapidMiner GmbH"
+    homepage = "www.rapidminer.com"
+
+    // define RapidMiner version and extension dependencies
+    dependencies {
+        rapidminer rapidminerVersion
+        extension namespace: 'browser', version: browserVersion
+//        // Only enable the dependency to the kafka_connector extension for release. Disable it for SNAPSHOT builds and
+//        // use the compile files dependency below
+//        // extension namespace: 'kafka_connector', version: kafkaConnectorVersion
+    }
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+
+    repositories {
+        jcenter()
+        maven { url 'https://maven.rapidminer.com/content/groups/public/' }
+    }
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
+}
+// Modules that need to be included as (sub-)JAR-s in the main JAR
+def shadowModules = subprojects
+        .findAll { ['spark', 'flink', 'rapidminer-as-plugin' , 'rapidminer-as-plugin-common'].contains(it.name) }
+
+// Configure shadow plugin for selected modules only
+configure(shadowModules) { p ->
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    shadowJar {
+        zip64 true
+    }
+
+    p.group = project.group
+    p.version = project.version
+    p.sourceCompatibility = project.sourceCompatibility
+}
+
+// Prepare module (sub-)JAR-s for the main JAR building process
+task shadowModuleJars(type: Zip) {
+    from(shadowModules.collect { p -> p.shadowJar.archivePath })
+
+    baseName = "shadowModuleJars"
+    version = project.version
+    extension = "jar"
+    destinationDir = shadowJar.destinationDir
+
+    dependsOn = shadowModules.collect { p -> p.shadowJar }
+}
+
+// Configure the dependency on the preparation task
+shadowJar.dependsOn(shadowModuleJars)
+
+// Configure shadowing process for the main JAR, among other things add the modules
+shadowJar {
+    zip64 true
+    from shadowModuleJars
+
+}
+ext {
+    jaxbVer     = '4.0.5'   // glassfish jaxb artifacts
+    jaxbApiVer  = '4.0.2'   // jakarta.xml.bind-api
+    actApiVer   = '2.1.3'   // jakarta.activation-api
+    jpmmlVer    = '1.7.4'
+}
+dependencies {
+    // For launching Flink jobs
+    compile group: 'org.apache.flink', name: 'flink-runtime-web_' + flinkScalaVersion, version: flinkVersion
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.11'
+    compile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.5.11'
+
+    compile group: 'org.apache.kafka', name: 'kafka-clients', version: '2.4.0'
+    compile group: 'org.json', name: 'json', version: '20190722'
+    compile group: 'com.google.guava', name: 'guava', version: 'r05'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    compile group: 'org.springframework', name: 'spring-web', version: '5.2.9.RELEASE'
+    compile group: 'org.springframework', name: 'spring-websocket', version: '5.2.9.RELEASE'
+    compile group: 'org.springframework', name: 'spring-messaging', version: '5.2.9.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.5.3'
+    // https://mvnrepository.com/artifact/org.jpmml/pmml-evaluator-metro
+
+//    implementation "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2"
+//    runtimeOnly   "org.glassfish.jaxb:jaxb-runtime:4.0.5"
+//    implementation "jakarta.activation:jakarta.activation-api:2.1.3"
+    // https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api
+//    implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
+//    // https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl
+//    implementation("com.sun.xml.bind:jaxb-impl:4.0.2")
+//    compile files("libs/jakarta.xml.bind-api-4.0.2.jar")
+
+
+    // --- Other shown dependency ---
+//    implementation "org.apiguardian:apiguardian-api:1.1.0"
+    compile files("libs/kafka_connector-${kafkaConnectorVersion}-all.jar")
+    compile files("libs/rapidminer-rtsa-extension-1.0.0-all.jar")
+    compile files("libs/rmx_text-10.1.0.jar")
+    compile files("libs/rapidminer-extension-blending-10.5.0-all.jar")
+    compile files("libs/rapidminer-extension-concurrency-10.5.0-all.jar")
+    compile files("libs/KNNModelLoader-1.0-SNAPSHOT.jar")
+
+    compile files("libs/rmx_process_defined_operators-ANY-2.0.1.jar")
+    compile files("libs/rmx_python_scripting-ANY-11.0.4.jar")
+//    implementation("com.sun.xml.bind:jaxb-impl:4.0.0")
+//    implementation("org.glassfish.jaxb:jaxb-runtime:4.0.0")
+    // https://mvnrepository.com/artifact/org.pmml4s/pmml4s
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+//    implementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.1'
+//    implementation group: 'org.pmml4s', name: 'pmml4s_3', version: '1.5.8'
+//    implementation("org.jpmml:pmml-evaluator-metro:1.7.4")
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params
+//    implementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.7.1'
+
+    // Module
+    compile project(path: ':utility')
+    compile project(path: ':rapidminer-as-plugin-common')
+    compile project(path: ':rapidminer-as-plugin-bridge')
+}
+
+
+
+// Web-UI (dashboard) task (build)
+class NpmTask extends Exec {
+    private String npmExecutable = Os.isFamily(Os.FAMILY_WINDOWS) ? 'npm.cmd' : 'npm'
+    private String switches = "--no-color"
+
+    NpmTask() { this.setExecutable(npmExecutable) }
+
+    void setNpmArgs(String npmArgs) { this.args = "$switches $npmArgs".trim().split(" ") as List }
+}
+
+//tasks.register('npmInstall', NpmTask) {
+//    workingDir = "./dashboard"
+//    npmArgs = "install"
+//}
+//
+//tasks.register('npmProduction', NpmTask) {
+//    workingDir = "./dashboard"
+//    dependsOn npmInstall
+//    npmArgs = "run build:production"
+//}
+//
+//tasks.register('npmCheckstyle', NpmTask) {
+//    workingDir = "./dashboard"
+//    dependsOn npmInstall
+//    npmArgs = "run lint:checkstyle"
+//}
+
+//installExtension.dependsOn npmProduction

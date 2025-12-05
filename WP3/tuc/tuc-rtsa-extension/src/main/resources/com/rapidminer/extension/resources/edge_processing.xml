@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../documentation2html.xsl"?>
+<p1:documents xmlns:p1="http://rapid-i.com/schemas/documentation/reference/1.0"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://rapid-i.com/schemas/documentation/reference/1.0                http://rapid-i.com/schemas/documentation/reference/1.0/documentation.xsd">
+
+    <operator key="rtsa:edge_processing" locale="en" version="7.6.000">
+
+        <title>Edge Processing</title>
+
+        <synopsis>
+            Edge Processing operator enables user to create a workflow that can be deployed to the connected RTS agent for execution. The operator follows the steps below:
+            1. Packages the nested workflow into a zip file
+            2. Uploads the zip file to the connected AI Hub
+            3. Via AI Hub, the workflow is sent to the connected RTS agent for execution        </synopsis>
+
+        <text>
+            <paragraph>
+                Edge Processing operator enables user to create a workflow that can be deployed to the connected RTS agent for execution. The operator follows the steps below:
+                1. Packages the nested workflow into a zip file
+                2. Uploads the zip file to the connected AI Hub
+                3. Via AI Hub, the workflow is sent to the connected RTS agent for execution
+            </paragraph>
+        </text>
+
+
+
+        <inputPorts>
+            <port name = "connection" type = "com.rapidminer.connection.ConnectionInformationContainerIOObject">
+                <paragraph>
+                    The connection to the ai hub, where the nested workflow is uploaded for deployment.
+                </paragraph>
+
+            </port>
+            <port name = "connection" type = "com.rapidminer.connection.ConnectionInformationContainerIOObject">
+                <paragraph>
+                    The connection to the available rts agent, where the nested workflow is sent for execution.
+
+                </paragraph>
+            </port>
+        </inputPorts>
+
+
+        <outputPorts>
+            <port name = "output" type = "com.rapidminer.operator.IOObject">
+                <paragraph>
+                    This is port is a port extender, which means if a port is connected a new <em>output</em> port is created.
+                    Any IOObject can be connected to the inner port and is passed to the corresponding outer port.
+                </paragraph>
+            </port>
+        </outputPorts>
+
+
+        <parameters>
+
+            <parameter key="name">
+                <paragraph>
+                    The internal name of the project to create on AI Hub.
+                </paragraph>
+            </parameter>
+
+            <parameter key="display_name">
+                <paragraph>
+                    The human-readable display name of the project.
+                </paragraph>
+            </parameter>
+
+            <parameter key="description">
+                <paragraph>
+                    Optional description of the project.
+                </paragraph>
+            </parameter>
+
+            <parameter key="continuous_execution">
+                <paragraph>
+                    If true, the deployed workflow runs continuously on RTSA.
+                </paragraph>
+            </parameter>
+
+            <parameter key="sleep_time">
+                <paragraph>
+                    Sleep interval (in milliseconds) between continuous execution cycles.
+                </paragraph>
+            </parameter>
+
+            <parameter key="permissions">
+                <paragraph>
+                    Advanced permission settings for the new project.
+                    Each entry contains a group name and the privilege ("ACCESS" or "OWNERSHIP").
+                </paragraph>
+            </parameter>
+
+            <parameter key="repository_path">
+                <paragraph>
+                    Repository folder whose contents will be added to the new project before deployment.
+                </paragraph>
+            </parameter>
+
+            <parameter key="initialize">
+                <paragraph>
+                    If true, initializes the project directory structure when creating the project.
+                </paragraph>
+            </parameter>
+
+            <parameter key="lfs_enabled">
+                <paragraph>
+                    If true, enables Git LFS support for the project on AI Hub.
+                </paragraph>
+            </parameter>
+
+            <parameter key="fail_on_error">
+                <paragraph>
+                    If true, the operator stops with an error if project creation fails.
+                </paragraph>
+            </parameter>
+
+            <parameter key="secret">
+                <paragraph>
+                    Optional secret string used during project creation and deployment.
+                </paragraph>
+            </parameter>
+
+        </parameters>
+
+
+    </operator>
+</p1:documents>

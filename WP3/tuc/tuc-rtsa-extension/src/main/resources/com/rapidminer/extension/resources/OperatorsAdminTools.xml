@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<operators name="admin" version="6.0" docbundle="com/rapidminer/extension/resources/i18n/OperatorsDocAdminTools">
+<!--    <group key="data_access">-->
+<!--        <operator>-->
+<!--            <key>edit_access_rights</key>-->
+<!--            <icon>users.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.EditAccessRights</class>-->
+<!--        </operator>-->
+<!--    </group>-->
+<!--	<group key="deprecated">-->
+<!--		<operator>-->
+<!--			<deprecatedSince>9.0</deprecatedSince>-->
+<!--			<key>aihub_deploy_project</key>-->
+<!--			<icon>server_network.png</icon>-->
+<!--			<class>com.rapidminer.extension.admin.operator.projects.DeployProjectOperator</class>-->
+<!--		</operator>-->
+<!--	</group>-->
+<!--    <group key="ai_hub">-->
+<!--        <operator>-->
+<!--            <key>aihub_delete_schedule</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.aihubapi.DeleteScheduleOperator</class>-->
+<!--        </operator>-->
+<!--        <operator>-->
+<!--            <key>aihub_get_projects</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.projects.GetProjectsOperator</class>-->
+<!--        </operator>-->
+<!--		<operator>-->
+<!--            <key>aihub_get_project</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.projects.GetProjectOperator</class>-->
+<!--        </operator>-->
+<!--        <operator>-->
+<!--            <key>aihub_create_project</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.projects.CreateProjectOperator</class>-->
+<!--        </operator>-->
+<!--        <operator>-->
+<!--            <key>aihub_add_contents_project</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.projects.AddContentsToProjectOperator</class>-->
+<!--        </operator>-->
+<!--        <operator>-->
+<!--            <key>aihub_delete_project</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.projects.DeleteProjectOperator</class>-->
+<!--        </operator>-->
+<!--        <operator>-->
+<!--            <key>aihub_get_jobs</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.aihubapi.GetJobsOperator</class>-->
+<!--        </operator>-->
+<!--        <operator>-->
+<!--            <key>aihub_get_jwt</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.aihubapi.GetJWTOperator</class>-->
+<!--        </operator>-->
+<!--        <operator>-->
+<!--            <key>aihub_get_log</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.aihubapi.GetLogOperator</class>-->
+<!--        </operator>-->
+<!--        <operator>-->
+<!--            <key>aihub_get_metrics</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.aihubapi.GetMetricsOperator</class>-->
+<!--        </operator>-->
+<!--        <operator>-->
+
+<!--            <key>aihub_get_schedules</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.aihubapi.GetSchedulesOperator</class>-->
+<!--        </operator>-->
+
+<!--        <operator>-->
+<!--            <key>aihub_kill_job</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.aihubapi.KillJobOperator</class>-->
+<!--        </operator>-->
+
+<!--        <operator>-->
+<!--            <key>aihub_run_process</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.aihubapi.RunJobOperator</class>-->
+<!--        </operator>-->
+<!--        <operator>-->
+<!--            <key>aihub_create_schedule</key>-->
+<!--            <icon>server_network.png</icon>-->
+<!--            <class>com.rapidminer.extension.admin.operator.aihubapi.CreateScheduleOperator</class>-->
+<!--        </operator>-->
+<!--    </group>-->
+    <group key="rtsa">
+        <operator>
+            <key>deploy_project_rtsa</key>
+            <icon>server_network.png</icon>
+            <class>com.rapidminer.extension.admin.operator.rtsa.DeployOnRTSAOperator</class>
+        </operator>
+        <operator>
+            <key>edge_processing</key>
+            <icon>server_network.png</icon>
+            <class>com.rapidminer.extension.admin.operator.rtsa.EdgeProcessing</class>
+        </operator>
+    </group>
+</operators>

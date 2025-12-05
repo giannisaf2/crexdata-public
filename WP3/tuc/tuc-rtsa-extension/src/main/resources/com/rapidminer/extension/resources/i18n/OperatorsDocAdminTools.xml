@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="windows-1252" standalone="no"?>
+<operatorHelp lang="en_EN">
+    <operator>
+        <key>edit_access_rights</key>
+        <name>Edit Access Rights</name>
+        <tags>
+            <tag>Data Access</tag>
+            <tag>Permissions</tag>
+        </tags>
+    </operator>
+
+    <operator>
+        <key>aihub_get_jobs</key>
+        <name>Get Jobs (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Run</tag>
+            <tag>Execution</tag>
+            <tag>Process</tag>
+            <tag>Trigger</tag>
+            <tag>History</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_get_schedules</key>
+        <name>Get Schedules (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Schedule</tag>
+            <tag>History</tag>
+            <tag>Executions</tag>
+            <tag>Cron</tag>
+            <tag>Frequent</tag>
+            <tag>Regular</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_create_schedule</key>
+        <name>Schedule Job (AI Hub)</name>
+        <tags>
+            <tag>server</tag>
+            <tag>run</tag>
+            <tag>execution</tag>
+            <tag>trigger</tag>
+            <tag>cron</tag>
+            <tag>Frequent</tag>
+            <tag>Regular</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_delete_schedule</key>
+        <name>Delete Schedule (AI Hub)</name>
+        <tags>
+            <tag>server</tag>
+            <tag>run</tag>
+            <tag>execution</tag>
+            <tag>trigger</tag>
+            <tag>cron</tag>
+            <tag>Frequent</tag>
+            <tag>Regular</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_get_log</key>
+        <name>Get Log (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Retrieve</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_run_process</key>
+        <name>Run Job (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Run</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_kill_job</key>
+        <name>Kill Job (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Stop</tag>
+            <tag>Cancel</tag>
+            <tag>Abort</tag>
+            <tag>Process</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_get_jwt</key>
+        <name>Get JWT (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Token</tag>
+            <tag>Authentication</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_get_metrics</key>
+        <name>Get Metrics (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Token</tag>
+            <tag>Authentication</tag>
+        </tags>
+    </operator>
+
+    <operator>
+        <key>aihub_deploy_project</key>
+        <name>Deploy Project (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>push</tag>
+            <tag>git</tag>
+            <tag>Project</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_get_projects</key>
+        <name>Get Projects (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Project</tag>
+        </tags>
+    </operator>
+	<operator>
+        <key>aihub_get_project</key>
+        <name>Get Project (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Project</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_create_project</key>
+        <name>Create Project (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Project</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_delete_project</key>
+        <name>Delete Project (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Project</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>aihub_add_contents_project</key>
+        <name>Add Contents to Project (AI Hub)</name>
+        <tags>
+            <tag>Server</tag>
+            <tag>Project</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>deploy_project_rtsa</key>
+        <name>Deploy Project (RTSA)</name>
+        <tags>
+            <tag>RTSA</tag>
+            <tag>Project</tag>
+        </tags>
+    </operator>
+    <operator>
+        <key>get_deployments_rtsa</key>
+        <name>Get Endpoints (RTSA)</name>
+        <tags>
+            <tag>RTSA</tag>
+
+        </tags>
+    </operator>
+    <operator>
+        <key>delete_deployment_rtsa</key>
+        <name>Delete Deployment (RTSA)</name>
+        <tag>
+            <tag>RTSA</tag>
+        </tag>
+    </operator>
+    <operator>
+        <key>call_endpoint_rtsa</key>
+        <name>Call Endpoint(RTSA)</name>
+        <tag>
+            <tag>RTSA</tag>
+        </tag>
+    </operator>
+    <operator>
+        <key>get_logs_rtsa</key>
+        <name>Get Logs (RTSA)</name>
+        <tag>
+            <tag>RTSA</tag>
+        </tag>
+    </operator>
+    <operator>
+        <key>edge_processing</key>
+        <name>Edge Processing</name>
+        <tag>
+            <tag>RTSA</tag>
+        </tag>
+    </operator>
+    <operator>
+        <key>get_log_rtsa</key>
+        <name>Get Log (RTSA)</name>
+        <tag>
+            <tag>RTSA</tag>
+        </tag>
+    </operator>
+</operatorHelp>
