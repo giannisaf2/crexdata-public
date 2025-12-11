@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="10.5.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="10.5.000" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="python_scripting:python_transformer" compatibility="10.1.002" expanded="true" height="82" name="QA Operator (llama.cpp GGUF)" width="90" x="447" y="85">
+        <parameter key="editable" value="false"/>
+        <parameter key="operator" value="{&#13;&#10;  &quot;name&quot; : &quot;QA Operator (llama\.cpp GGUF)&quot;,&#13;&#10;  &quot;dropSpecial&quot; : true,&#13;&#10;  &quot;parameters&quot; : [ {&#13;&#10;    &quot;name&quot; : &quot;temperature&quot;,&#13;&#10;    &quot;type&quot; : &quot;string&quot;,&#13;&#10;    &quot;description&quot; : &quot;Value should be greater zero\.&quot;,&#13;&#10;    &quot;value&quot; : 0\.7,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;top_k&quot;,&#13;&#10;    &quot;type&quot; : &quot;integer&quot;,&#13;&#10;    &quot;description&quot; : &quot;Value should be greater zero&quot;,&#13;&#10;    &quot;value&quot; : 40,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;top_p&quot;,&#13;&#10;    &quot;type&quot; : &quot;string&quot;,&#13;&#10;    &quot;description&quot; : &quot;An example of a double parameter\.&quot;,&#13;&#10;    &quot;value&quot; : 0\.95,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;min_p&quot;,&#13;&#10;    &quot;type&quot; : &quot;string&quot;,&#13;&#10;    &quot;description&quot; : &quot;An example of a double parameter\.&quot;,&#13;&#10;    &quot;value&quot; : 0\.0,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;max_tokens&quot;,&#13;&#10;    &quot;type&quot; : &quot;integer&quot;,&#13;&#10;    &quot;description&quot; : &quot;Multiples of 2, larger value will allow QA to output more tokens\.&quot;,&#13;&#10;    &quot;value&quot; : 2048,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;repeat_penalty&quot;,&#13;&#10;    &quot;type&quot; : &quot;string&quot;,&#13;&#10;    &quot;description&quot; : &quot;An example of a double parameter\.&quot;,&#13;&#10;    &quot;value&quot; : 1\.1,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  } ],&#13;&#10;  &quot;inputs&quot; : [ {&#13;&#10;    &quot;name&quot; : &quot;data&quot;,&#13;&#10;    &quot;type&quot; : &quot;table&quot;&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;model&quot;,&#13;&#10;    &quot;type&quot; : &quot;file&quot;&#13;&#10;  } ],&#13;&#10;  &quot;outputs&quot; : [ {&#13;&#10;    &quot;name&quot; : &quot;out&quot;,&#13;&#10;    &quot;type&quot; : &quot;table&quot;&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;through&quot;,&#13;&#10;    &quot;type&quot; : &quot;table&quot;&#13;&#10;  } ]&#13;&#10;}.from pandas import DataFrame&#10;from llama_cpp import Llama&#10;&#10;&#10;# Mandatory main function\. This example expects a single input followed by the&#10;# parameter dictionary\.&#10;def rm_main(data, mod, parameters):&#10;&#9;responses = []&#10;&#9;model = Llama(model_path=mod\.name,n_ctx=8192,use_mmap=False) &#10;&#9;for prompt in data['prompt']\.to_list():&#10;&#9;&#9;conversation = [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}]&#10;&#9;&#9;model\.reset()&#10;&#9;&#9;res = model\.create_chat_completion(conversation, top_k=int(parameters['top_k']), top_p=float(parameters['top_p']), min_p=float(parameters['min_p']), temperature=float(parameters['temperature']), max_tokens=int(parameters['max_tokens']), repeat_penalty=float(parameters['repeat_penalty']))&#10;&#9;&#9;qa_response = res[&quot;choices&quot;][0][&quot;message&quot;][&quot;content&quot;]&#10;&#9;&#9;responses\.append(qa_response)&#10;&#9;response = data\.copy()&#10;&#9;response['qa_response'] = responses&#10;&#9;&#10;&#9;return response, data&#10;&#10;&#10;"/>
+        <parameter key="use_default_python" value="false"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+        <parameter key="conda_environment" value="rm_genai"/>
+        <parameter key="temperature" value="0.7"/>
+        <parameter key="top_k" value="40"/>
+        <parameter key="top_p" value="0.95"/>
+        <parameter key="min_p" value="0.0"/>
+        <parameter key="max_tokens" value="2048"/>
+        <parameter key="repeat_penalty" value="1.1"/>
+      </operator>
+      <connect from_port="input 1" to_op="QA Operator (llama.cpp GGUF)" to_port="data"/>
+      <connect from_port="input 2" to_op="QA Operator (llama.cpp GGUF)" to_port="model"/>
+      <connect from_op="QA Operator (llama.cpp GGUF)" from_port="out" to_port="result 1"/>
+      <connect from_op="QA Operator (llama.cpp GGUF)" from_port="through" to_port="result 2"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="source_input 2" spacing="0"/>
+      <portSpacing port="source_input 3" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+    </process>
+  </operator>
+  <title>Text Mining QA Inference</title>
+  <icon>question_and_answer.png</icon>
+  <description>This operator accepts the regular inference parameters for generative AI for Question Answering. It take as input a prompt in an ExampleSet and generates an answer based on that prompt. Should be used with Text Mining Generate QA Prompt Operator.</description>
+  <synopsis>This operator queries a LLM using llama.cpp python for question answering.</synopsis>
+  <number-of-inputs>2</number-of-inputs>
+  <number-of-outputs>2</number-of-outputs>
+  <defines-optionals>true</defines-optionals>
+  <param-ordering>true</param-ordering>
+  <gets-random-seed>true</gets-random-seed>
+  <custom-operator-type>standard</custom-operator-type>
+  <template-parameters>
+    <template-parameter>
+      <operator>QA Operator (llama.cpp GGUF)</operator>
+      <parameter>use_default_python</parameter>
+      <alias>use_default_python</alias>
+      <documentation>Use the default environment, as specified in the Preferences.</documentation>
+      <optional>true</optional>
+    </template-parameter>
+    <template-parameter>
+      <operator>QA Operator (llama.cpp GGUF)</operator>
+      <parameter>package_manager</parameter>
+      <alias>package_manager</alias>
+      <documentation>Python package manager framework.</documentation>
+      <dependency>
+        <parameter-alias>use_default_python</parameter-alias>
+        <parameter-value>false</parameter-value>
+      </dependency>
+    </template-parameter>
+    <template-parameter>
+      <operator>QA Operator (llama.cpp GGUF)</operator>
+      <parameter>conda_environment</parameter>
+      <alias>conda_environment</alias>
+      <documentation>Conda environment</documentation>
+      <dependency>
+        <parameter-alias>use_default_python</parameter-alias>
+        <parameter-value>false</parameter-value>
+      </dependency>
+    </template-parameter>
+    <template-parameter>
+      <operator>QA Operator (llama.cpp GGUF)</operator>
+      <parameter>temperature</parameter>
+      <alias>temperature</alias>
+      <documentation>Temperature value for transformers LLM inference.</documentation>
+      <optional>true</optional>
+    </template-parameter>
+    <template-parameter>
+      <operator>QA Operator (llama.cpp GGUF)</operator>
+      <parameter>top_k</parameter>
+      <alias>top_k</alias>
+      <documentation>Top K value for transformers LLM inference.</documentation>
+      <optional>true</optional>
+    </template-parameter>
+    <template-parameter>
+      <operator>QA Operator (llama.cpp GGUF)</operator>
+      <parameter>top_p</parameter>
+      <alias>top_p</alias>
+      <documentation>Top P value for transformers LLM inference.</documentation>
+      <optional>true</optional>
+    </template-parameter>
+    <template-parameter>
+      <operator>QA Operator (llama.cpp GGUF)</operator>
+      <parameter>min_p</parameter>
+      <alias>min_p</alias>
+      <documentation>Min P value for transformers LLM inference.</documentation>
+      <optional>true</optional>
+    </template-parameter>
+    <template-parameter>
+      <operator>QA Operator (llama.cpp GGUF)</operator>
+      <parameter>max_tokens</parameter>
+      <alias>max_tokens</alias>
+      <documentation>Max number of tokens to generate for transformers LLM inference.</documentation>
+      <optional>true</optional>
+    </template-parameter>
+    <template-parameter>
+      <operator>QA Operator (llama.cpp GGUF)</operator>
+      <parameter>repeat_penalty</parameter>
+      <alias>repeat_penalty</alias>
+      <documentation>Repetition penalty value for transformers LLM inference.</documentation>
+      <optional>true</optional>
+    </template-parameter>
+  </template-parameters>
+  <input-docu>
+    <port>
+      <type>com.rapidminer.operator.IOObject</type>
+      <description>Prompt ExampleSet</description>
+    </port>
+    <port>
+      <type>com.rapidminer.operator.IOObject</type>
+      <description>LLM model in GGUF format supported by llama.cpp python.</description>
+    </port>
+  </input-docu>
+  <output-docu>
+    <port>
+      <type>com.rapidminer.example.ExampleSet</type>
+      <description>Answer ExampleSet.</description>
+    </port>
+    <port>
+      <type>com.rapidminer.example.ExampleSet</type>
+      <description>Prompt ExampleSet</description>
+    </port>
+  </output-docu>
+  <tutorials/>
+  <input-port-names>data␞model</input-port-names>
+  <output-port-names>out␞through</output-port-names>
+</process>

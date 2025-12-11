@@ -1,0 +1,52 @@
+#version: "2.2"
+#networks:
+#  default:
+#    name: streaming_network
+#    external: true
+
+services: 
+  flink-2-jm:
+    restart: always
+    build: .
+    platform: linux/amd64
+    mem_limit: 4096m
+    hostname: flink-2-jm-19212
+    expose:
+      - "6133"
+    ports:
+      - "48091:8081"
+    volumes:
+      - "jm_2_data:/flink"
+      - ./shared/relevance_job_utils:/mnt/relevance_job_utils
+      - ./shared/kafka_auth_files:/mnt/kafka_auth_files
+    command: jobmanager
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-2-jm
+
+  flink-2-tm:
+    restart: always
+    build: .
+    platform: linux/amd64
+    scale: 2
+    mem_limit: 4096m
+    expose:
+      - "6131"
+      - "6132"
+    volumes:
+      - "tm_2_data:/flink"
+      - ./shared/relevance_job_utils:/mnt/relevance_job_utils
+      - ./shared/kafka_auth_files:/mnt/kafka_auth_files
+    depends_on:
+      - flink-2-jm
+    command: taskmanager
+    links:
+      - "flink-2-jm:flink-2-jm"
+    environment:
+      - JOB_MANAGER_RPC_ADDRESS=flink-2-jm
+
+volumes:
+  jm_2_data:
+    driver: local
+  tm_2_data:
+    driver: local
+

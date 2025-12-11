@@ -1,0 +1,58 @@
+{
+  "type" : "transformer",
+  "declaration" : {
+    "name" : "Start Flink Job (SSH)",
+    "parameters" : [ {
+      "name" : "docker_container_name",
+      "type" : "string",
+      "description" : "Docker container name on remote",
+      "value" : "flink-2-flink-2-jm-1"
+    }, {
+      "name" : "ssh_host_name",
+      "type" : "string",
+      "description" : "SSH connection server name",
+      "value" : "server.crexdata.eu"
+    }, {
+      "name" : "ssh_user_name",
+      "type" : "string",
+      "description" : "SSH connection user name",
+      "value" : "ubuntu"
+    }, {
+      "name" : "flink_job_name",
+      "type" : "string",
+      "description" : "Name of flink job",
+      "value" : "relevance-prediction-job-test-async"
+    }, {
+      "name" : "kafka_server",
+      "type" : "string",
+      "description" : "Kafka boostrap server and port",
+      "value" : "server.crexdata.eu:9092"
+    }, {
+      "name" : "input_topic",
+      "type" : "string",
+      "description" : "Input kafka topic with tweets",
+      "value" : "input"
+    }, {
+      "name" : "output_topic",
+      "type" : "string",
+      "description" : "Output kafka topic after processing",
+      "value" : "output"
+    }, {
+      "name" : "filtered_topic",
+      "type" : "string",
+      "description" : "Output kafka topic to send filtered tweet with detected events",
+      "value" : "mytopik3"
+    }, {
+      "name" : "offset_type",
+      "type" : "category",
+      "description" : "Use 'earliest' to process a whole topic from the beginning and 'latest' for new incoming messages.",
+      "categories" : [ "latest", "earliest" ],
+      "value" : "latest"
+    } ],
+    "inputs" : [ {
+      "name" : "sshkey",
+      "type" : "file"
+    } ]
+  },
+  "definition" : "import paramiko\n\n\ndef rm_main(key, parameters):\n\tkey_file_path = key.name\n\tprint(key_file_path)\n\t\n\t# The command you want to execute on the remote server\n\tremote_command = f\"docker exec {parameters['docker_container_name']} bash -c 'flink run -d -py /mnt/relevance_job_utils/relevance-job-testing-async.py --jarfile /mnt/relevance_job_utils/flink-sql-connector-kafka-4.0.0-2.0.jar \" +\\\n\tf\"--kafka-server {parameters['kafka_server']} \" +\\\n\tf\"--input-topic {parameters['input_topic']} \" +\\\n\tf\"--output-topic {parameters['output_topic']} \" +\\\n\tf\"--output-filtered {parameters['filtered_topic']} \" +\\\n\tf\"--job-name {parameters['flink_job_name']} \" +\\\n\tf\"--offset-type {parameters['offset_type']}'\"\n\n\tprivate_key = paramiko.RSAKey.from_private_key_file(key_file_path)\n\t\n\t# Establish an SSH connection\n\tssh = paramiko.SSHClient()\n\tssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())\n\tssh.connect(parameters['ssh_host_name'], username=parameters['ssh_user_name'], pkey=private_key)\n\t\n\t# Execute the remote command\n\t_, stdout, stderr = ssh.exec_command(remote_command)\n\tprint(\"Output of the remote command:\")\n\n\tprint(f\"stdout:\\n {stdout.read().decode()}\")\n\tssh.close()\n"
+}

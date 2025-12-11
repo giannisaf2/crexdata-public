@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="10.5.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="10.5.000" expanded="true" name="Process" origin="GENERATED_TUTORIAL">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="open_file" compatibility="10.5.000" expanded="true" height="68" name="SSH keyfile" width="90" x="916" y="187">
+        <parameter key="resource_type" value="file"/>
+        <parameter key="filename" value="C:/Users/jayebaku/.ssh/CREXDATA.pem"/>
+      </operator>
+      <operator activated="true" class="crexdata_text_mining_for_event_extraction:text_mining_start_prediction_flink_job" compatibility="1.0.000" expanded="true" height="68" name="Text Mining Start Prediction Flink Job" width="90" x="1117" y="187">
+        <parameter key="use_default_python" value="false"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+        <parameter key="conda_environment" value="rm_genai"/>
+        <parameter key="docker_container_name" value="flink-2-flink-2-jm-1"/>
+        <parameter key="ssh_host_name" value="server.crexdata.eu"/>
+        <parameter key="ssh_user_name" value="ubuntu"/>
+        <parameter key="flink_job_name" value="relevance-prediction-job-test-async"/>
+        <parameter key="kafka_server" value="server.crexdata.eu:9092"/>
+        <parameter key="input_topic" value="input"/>
+        <parameter key="output_topic" value="output"/>
+        <parameter key="filtered_topic" value="mytopik3"/>
+        <parameter key="offset_type" value="latest"/>
+      </operator>
+      <connect from_op="SSH keyfile" from_port="file" to_op="Text Mining Start Prediction Flink Job" to_port="ssh"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <description align="center" color="yellow" colored="false" height="95" resized="true" width="485" x="832" y="56">Runs a python script in container flink2 (/home/ubuntu/flink- 2) container on crexdata main servers using SSH.&lt;br&gt;You need a pemission file to use SSH, and a python library paramiko.</description>
+    </process>
+  </operator>
+</process>

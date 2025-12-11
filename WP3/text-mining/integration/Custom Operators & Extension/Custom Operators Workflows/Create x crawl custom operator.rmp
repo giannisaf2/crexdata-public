@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="10.5.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="10.5.000" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="set_macro" compatibility="10.5.000" expanded="true" height="82" name="Set Crawl ID" width="90" x="45" y="136">
+        <parameter key="macro" value="crawl_id"/>
+        <parameter key="value" value="flood_barcelona_250402"/>
+      </operator>
+      <operator activated="true" class="process_defined_operators:category_parameter_macro" compatibility="1.2.002" expanded="true" height="82" name="Set Crawl Command" width="90" x="179" y="136">
+        <enumeration key="possible_values">
+          <parameter key="value" value="start"/>
+          <parameter key="value" value="kill"/>
+        </enumeration>
+        <parameter key="macro" value="command"/>
+        <parameter key="value" value="start"/>
+        <parameter key="set_as_integer_macro" value="false"/>
+      </operator>
+      <operator activated="true" class="set_macro" compatibility="10.5.000" expanded="true" height="82" name="Set X username" width="90" x="313" y="136">
+        <parameter key="macro" value="username"/>
+      </operator>
+      <operator activated="true" class="set_macro" compatibility="10.5.000" expanded="true" height="82" name="Set X email" width="90" x="447" y="136">
+        <parameter key="macro" value="email"/>
+      </operator>
+      <operator activated="true" class="set_macro" compatibility="10.5.000" expanded="true" height="82" name="Set X password" width="90" x="581" y="136">
+        <parameter key="macro" value="password"/>
+      </operator>
+      <operator activated="true" class="set_macro" compatibility="10.5.000" expanded="true" height="82" name="Set email pass" width="90" x="715" y="136">
+        <parameter key="macro" value="emailpass"/>
+      </operator>
+      <operator activated="true" class="process_defined_operators:double_parameter_macro" compatibility="1.2.002" expanded="true" height="82" name="Set Lat" width="90" x="849" y="136">
+        <parameter key="macro" value="lat"/>
+        <parameter key="value" value="41.3825"/>
+      </operator>
+      <operator activated="true" class="process_defined_operators:double_parameter_macro" compatibility="1.2.002" expanded="true" height="82" name="Set Lon" width="90" x="983" y="136">
+        <parameter key="macro" value="lon"/>
+        <parameter key="value" value="2.176944"/>
+      </operator>
+      <operator activated="true" class="process_defined_operators:integer_parameter_macro" compatibility="1.2.002" expanded="true" height="82" name="Set Radius" width="90" x="1117" y="136">
+        <parameter key="macro" value="radius"/>
+        <parameter key="value" value="100"/>
+        <parameter key="min" value="1"/>
+      </operator>
+      <operator activated="true" class="process_defined_operators:boolean_parameter_macro" compatibility="1.2.002" expanded="true" height="82" name="Boolean Lang" width="90" x="1251" y="136">
+        <parameter key="macro" value="set_lang"/>
+        <parameter key="value" value="true"/>
+      </operator>
+      <operator activated="true" class="process_defined_operators:category_parameter_macro" compatibility="1.2.002" expanded="true" height="82" name="Set Lang" width="90" x="1385" y="136">
+        <enumeration key="possible_values">
+          <parameter key="value" value="Amharic"/>
+          <parameter key="value" value="Arabic"/>
+          <parameter key="value" value="Armenian"/>
+          <parameter key="value" value="Basque"/>
+          <parameter key="value" value="Bengali"/>
+          <parameter key="value" value="Bosnian"/>
+          <parameter key="value" value="Bulgarian"/>
+          <parameter key="value" value="Burmese"/>
+          <parameter key="value" value="Catalan"/>
+          <parameter key="value" value="Croatian"/>
+          <parameter key="value" value="Czech"/>
+          <parameter key="value" value="Danish"/>
+          <parameter key="value" value="Dutch"/>
+          <parameter key="value" value="English"/>
+          <parameter key="value" value="Estonian"/>
+          <parameter key="value" value="Finnish"/>
+          <parameter key="value" value="French"/>
+          <parameter key="value" value="Georgian"/>
+          <parameter key="value" value="German"/>
+          <parameter key="value" value="Greek"/>
+          <parameter key="value" value="Gujarati"/>
+          <parameter key="value" value="Haitian Creole"/>
+          <parameter key="value" value="Hebrew"/>
+          <parameter key="value" value="Hindi"/>
+          <parameter key="value" value="Hungarian"/>
+          <parameter key="value" value="Icelandic"/>
+          <parameter key="value" value="Indonesian"/>
+          <parameter key="value" value="Italian"/>
+          <parameter key="value" value="Japanese"/>
+          <parameter key="value" value="Kannada"/>
+          <parameter key="value" value="Khmer"/>
+          <parameter key="value" value="Korean"/>
+          <parameter key="value" value="Lao"/>
+          <parameter key="value" value="Latinized Hindi"/>
+          <parameter key="value" value="Latvian"/>
+          <parameter key="value" value="Lithuanian"/>
+          <parameter key="value" value="Malayalam"/>
+          <parameter key="value" value="Maldivian"/>
+          <parameter key="value" value="Marathi"/>
+          <parameter key="value" value="Nepali"/>
+          <parameter key="value" value="Norwegian"/>
+          <parameter key="value" value="Oriya"/>
+          <parameter key="value" value="Panjabi"/>
+          <parameter key="value" value="Pashto"/>
+          <parameter key="value" value="Persian"/>
+          <parameter key="value" value="Polish"/>
+          <parameter key="value" value="Portuguese"/>
+          <parameter key="value" value="Romanian"/>
+          <parameter key="value" value="Russian"/>
+          <parameter key="value" value="Serbian"/>
+          <parameter key="value" value="Simplified Chinese"/>
+          <parameter key="value" value="Sindhi"/>
+          <parameter key="value" value="Sinhala"/>
+          <parameter key="value" value="Slovak"/>
+          <parameter key="value" value="Slovenian"/>
+          <parameter key="value" value="Sorani Kurdish"/>
+          <parameter key="value" value="Spanish"/>
+          <parameter key="value" value="Swedish"/>
+          <parameter key="value" value="Tagalog"/>
+          <parameter key="value" value="Tamil"/>
+          <parameter key="value" value="Telugu"/>
+          <parameter key="value" value="Thai"/>
+          <parameter key="value" value="Tibetan"/>
+          <parameter key="value" value="Traditional Chinese"/>
+          <parameter key="value" value="Turkish"/>
+          <parameter key="value" value="Ukrainian"/>
+          <parameter key="value" value="Urdu"/>
+          <parameter key="value" value="Uyghur"/>
+          <parameter key="value" value="Vietnamese"/>
+          <parameter key="value" value="Welsh"/>
+        </enumeration>
+        <parameter key="macro" value="lang"/>
+        <parameter key="value" value="English"/>
+        <parameter key="set_as_integer_macro" value="false"/>
+      </operator>
+      <operator activated="true" class="branch" compatibility="10.5.000" expanded="true" height="103" name="Branch (2)" origin="GENERATED_TUTORIAL" width="90" x="1519" y="136">
+        <parameter key="condition_type" value="expression"/>
+        <parameter key="expression" value="%{set_lang}==&quot;true&quot;"/>
+        <parameter key="io_object" value="ANOVAMatrix"/>
+        <parameter key="return_inner_output" value="true"/>
+        <process expanded="true">
+          <operator activated="true" class="branch" compatibility="10.5.000" expanded="true" height="82" name="Command creation" width="90" x="179" y="136">
+            <parameter key="condition_type" value="expression"/>
+            <parameter key="expression" value="if(%{command}==&quot;kill&quot;,TRUE,FALSE)"/>
+            <parameter key="io_object" value="ANOVAMatrix"/>
+            <parameter key="return_inner_output" value="true"/>
+            <process expanded="true">
+              <operator activated="true" class="text:create_document" compatibility="10.1.000" expanded="true" height="68" name="Create Document" width="90" x="179" y="85">
+                <parameter key="text" value="{&quot;crawl_id&quot;:&quot;%{crawl_id}&quot;,&quot;command&quot;:&quot;%{command}&quot;, &quot;crawl_params&quot;:{&quot;username&quot;:null,&quot;password&quot;:null,&quot;email&quot;:null,&quot;emailpass&quot;:null,&quot;lat&quot;:null,&quot;lon&quot;:null,&quot;radius&quot;:null,&quot;lang&quot;:null}}"/>
+                <parameter key="add label" value="false"/>
+                <parameter key="label_type" value="nominal"/>
+              </operator>
+              <connect from_op="Create Document" from_port="output" to_port="input 1"/>
+              <portSpacing port="source_condition" spacing="0"/>
+              <portSpacing port="source_input 1" spacing="0"/>
+              <portSpacing port="sink_input 1" spacing="0"/>
+              <portSpacing port="sink_input 2" spacing="0"/>
+            </process>
+            <process expanded="true">
+              <operator activated="true" class="text:create_document" compatibility="10.1.000" expanded="true" height="68" name="Create Document (4)" width="90" x="179" y="136">
+                <parameter key="text" value="{&quot;crawl_id&quot;:&quot;%{crawl_id}&quot;,&quot;command&quot;:&quot;%{command}&quot;, &quot;crawl_params&quot;:{&quot;username&quot;:&quot;%{username}&quot;,&quot;password&quot;:&quot;%{password}&quot;,&quot;email&quot;:&quot;%{email}&quot;,&quot;emailpass&quot;:&quot;%{emailpass}&quot;,&quot;lat&quot;:&quot;%{lat}&quot;,&quot;lon&quot;:&quot;%{lon}&quot;,&quot;radius&quot;:&quot;%{radius}&quot;,&quot;lang&quot;:&quot;%{lang}&quot;}}"/>
+                <parameter key="add label" value="false"/>
+                <parameter key="label_type" value="nominal"/>
+              </operator>
+              <connect from_op="Create Document (4)" from_port="output" to_port="input 1"/>
+              <portSpacing port="source_condition" spacing="0"/>
+              <portSpacing port="source_input 1" spacing="0"/>
+              <portSpacing port="sink_input 1" spacing="0"/>
+              <portSpacing port="sink_input 2" spacing="0"/>
+            </process>
+          </operator>
+          <operator activated="true" class="text:json_to_data" compatibility="10.1.000" expanded="true" height="82" name="JSON To Data" width="90" x="313" y="136">
+            <parameter key="ignore_arrays" value="true"/>
+            <parameter key="limit_attributes" value="false"/>
+            <parameter key="skip_invalid_documents" value="false"/>
+            <parameter key="guess_data_types" value="false"/>
+            <parameter key="keep_missing_attributes" value="true"/>
+            <parameter key="missing_values_aliases" value=", null, NaN, missing"/>
+            <parameter key="preserve_attribute_order" value="true"/>
+          </operator>
+          <operator activated="true" class="replace_missing_values" compatibility="10.5.000" expanded="true" height="103" name="Replace Missing Values" width="90" x="447" y="136">
+            <parameter key="return_preprocessing_model" value="false"/>
+            <parameter key="attribute_filter_type" value="regular_expression"/>
+            <parameter key="attribute" value=""/>
+            <parameter key="attributes" value=""/>
+            <parameter key="regular_expression" value="crawler_params*"/>
+            <parameter key="use_except_expression" value="false"/>
+            <parameter key="value_type" value="attribute_value"/>
+            <parameter key="use_value_type_exception" value="false"/>
+            <parameter key="except_value_type" value="time"/>
+            <parameter key="block_type" value="attribute_block"/>
+            <parameter key="use_block_type_exception" value="false"/>
+            <parameter key="except_block_type" value="value_matrix_row_start"/>
+            <parameter key="invert_selection" value="true"/>
+            <parameter key="include_special_attributes" value="false"/>
+            <parameter key="default" value="value"/>
+            <list key="columns"/>
+            <parameter key="replenishment_value" value="null"/>
+          </operator>
+          <connect from_port="input 1" to_port="input 1"/>
+          <connect from_op="Command creation" from_port="input 1" to_op="JSON To Data" to_port="documents 1"/>
+          <connect from_op="JSON To Data" from_port="example set" to_op="Replace Missing Values" to_port="example set input"/>
+          <connect from_op="Replace Missing Values" from_port="example set output" to_port="input 2"/>
+          <portSpacing port="source_condition" spacing="0"/>
+          <portSpacing port="source_input 1" spacing="0"/>
+          <portSpacing port="source_input 2" spacing="0"/>
+          <portSpacing port="sink_input 1" spacing="0"/>
+          <portSpacing port="sink_input 2" spacing="0"/>
+          <portSpacing port="sink_input 3" spacing="0"/>
+        </process>
+        <process expanded="true">
+          <operator activated="true" class="branch" compatibility="10.5.000" expanded="true" height="82" name="Command creation (2)" width="90" x="179" y="136">
+            <parameter key="condition_type" value="expression"/>
+            <parameter key="expression" value="if(%{command}==&quot;kill&quot;,TRUE,FALSE)"/>
+            <parameter key="io_object" value="ANOVAMatrix"/>
+            <parameter key="return_inner_output" value="true"/>
+            <process expanded="true">
+              <operator activated="true" class="text:create_document" compatibility="10.1.000" expanded="true" height="68" name="Create Document (5)" width="90" x="179" y="85">
+                <parameter key="text" value="{&quot;crawl_id&quot;:&quot;%{crawl_id}&quot;,&quot;command&quot;:&quot;%{command}&quot;, &quot;crawl_params&quot;:{&quot;username&quot;:null,&quot;password&quot;:null,&quot;email&quot;:null,&quot;emailpass&quot;:null,&quot;lat&quot;:null,&quot;lon&quot;:null,&quot;radius&quot;:null,&quot;lang&quot;:null}}"/>
+                <parameter key="add label" value="false"/>
+                <parameter key="label_type" value="nominal"/>
+              </operator>
+              <connect from_op="Create Document (5)" from_port="output" to_port="input 1"/>
+              <portSpacing port="source_condition" spacing="0"/>
+              <portSpacing port="source_input 1" spacing="0"/>
+              <portSpacing port="sink_input 1" spacing="0"/>
+              <portSpacing port="sink_input 2" spacing="0"/>
+            </process>
+            <process expanded="true">
+              <operator activated="true" class="text:create_document" compatibility="10.1.000" expanded="true" height="68" name="Create Document (6)" width="90" x="179" y="136">
+                <parameter key="text" value="{&quot;crawl_id&quot;:&quot;%{crawl_id}&quot;,&quot;command&quot;:&quot;%{command}&quot;, &quot;crawl_params&quot;:{&quot;username&quot;:&quot;%{username}&quot;,&quot;password&quot;:&quot;%{password}&quot;,&quot;email&quot;:&quot;%{email}&quot;,&quot;emailpass&quot;:&quot;%{emailpass}&quot;,&quot;lat&quot;:&quot;%{lat}&quot;,&quot;lon&quot;:&quot;%{lon}&quot;,&quot;radius&quot;:&quot;%{radius}&quot;,&quot;lang&quot;:&quot;%{lang}&quot;}}"/>
+                <parameter key="add label" value="false"/>
+                <parameter key="label_type" value="nominal"/>
+              </operator>
+              <connect from_op="Create Document (6)" from_port="output" to_port="input 1"/>
+              <portSpacing port="source_condition" spacing="0"/>
+              <portSpacing port="source_input 1" spacing="0"/>
+              <portSpacing port="sink_input 1" spacing="0"/>
+              <portSpacing port="sink_input 2" spacing="0"/>
+            </process>
+          </operator>
+          <operator activated="true" class="text:json_to_data" compatibility="10.1.000" expanded="true" height="82" name="JSON To Data (4)" width="90" x="313" y="136">
+            <parameter key="ignore_arrays" value="true"/>
+            <parameter key="limit_attributes" value="false"/>
+            <parameter key="skip_invalid_documents" value="false"/>
+            <parameter key="guess_data_types" value="false"/>
+            <parameter key="keep_missing_attributes" value="true"/>
+            <parameter key="missing_values_aliases" value=", null, NaN, missing"/>
+            <parameter key="preserve_attribute_order" value="true"/>
+          </operator>
+          <operator activated="true" class="replace_missing_values" compatibility="10.5.000" expanded="true" height="103" name="Replace Missing Values (3)" width="90" x="447" y="136">
+            <parameter key="return_preprocessing_model" value="false"/>
+            <parameter key="attribute_filter_type" value="regular_expression"/>
+            <parameter key="attribute" value=""/>
+            <parameter key="attributes" value=""/>
+            <parameter key="regular_expression" value="crawler_params*"/>
+            <parameter key="use_except_expression" value="false"/>
+            <parameter key="value_type" value="attribute_value"/>
+            <parameter key="use_value_type_exception" value="false"/>
+            <parameter key="except_value_type" value="time"/>
+            <parameter key="block_type" value="attribute_block"/>
+            <parameter key="use_block_type_exception" value="false"/>
+            <parameter key="except_block_type" value="value_matrix_row_start"/>
+            <parameter key="invert_selection" value="true"/>
+            <parameter key="include_special_attributes" value="false"/>
+            <parameter key="default" value="value"/>
+            <list key="columns"/>
+            <parameter key="replenishment_value" value="null"/>
+          </operator>
+          <connect from_port="input 1" to_port="input 1"/>
+          <connect from_op="Command creation (2)" from_port="input 1" to_op="JSON To Data (4)" to_port="documents 1"/>
+          <connect from_op="JSON To Data (4)" from_port="example set" to_op="Replace Missing Values (3)" to_port="example set input"/>
+          <connect from_op="Replace Missing Values (3)" from_port="example set output" to_port="input 2"/>
+          <portSpacing port="source_condition" spacing="0"/>
+          <portSpacing port="source_input 1" spacing="0"/>
+          <portSpacing port="source_input 2" spacing="0"/>
+          <portSpacing port="sink_input 1" spacing="0"/>
+          <portSpacing port="sink_input 2" spacing="0"/>
+          <portSpacing port="sink_input 3" spacing="0"/>
+        </process>
+      </operator>
+      <connect from_port="input 1" to_op="Set Crawl ID" to_port="through 1"/>
+      <connect from_op="Set Crawl ID" from_port="through 1" to_op="Set Crawl Command" to_port="through 1"/>
+      <connect from_op="Set Crawl Command" from_port="through 1" to_op="Set X username" to_port="through 1"/>
+      <connect from_op="Set X username" from_port="through 1" to_op="Set X email" to_port="through 1"/>
+      <connect from_op="Set X email" from_port="through 1" to_op="Set X password" to_port="through 1"/>
+      <connect from_op="Set X password" from_port="through 1" to_op="Set email pass" to_port="through 1"/>
+      <connect from_op="Set email pass" from_port="through 1" to_op="Set Lat" to_port="through 1"/>
+      <connect from_op="Set Lat" from_port="through 1" to_op="Set Lon" to_port="through 1"/>
+      <connect from_op="Set Lon" from_port="through 1" to_op="Set Radius" to_port="through 1"/>
+      <connect from_op="Set Radius" from_port="through 1" to_op="Boolean Lang" to_port="through 1"/>
+      <connect from_op="Boolean Lang" from_port="through 1" to_op="Set Lang" to_port="through 1"/>
+      <connect from_op="Set Lang" from_port="through 1" to_op="Branch (2)" to_port="input 1"/>
+      <connect from_op="Branch (2)" from_port="input 1" to_port="result 2"/>
+      <connect from_op="Branch (2)" from_port="input 2" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="source_input 2" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+    </process>
+  </operator>
+</process>

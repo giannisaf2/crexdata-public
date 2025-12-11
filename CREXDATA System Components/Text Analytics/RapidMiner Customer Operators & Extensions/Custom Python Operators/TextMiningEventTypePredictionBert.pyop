@@ -1,0 +1,24 @@
+{
+  "type" : "transformer",
+  "declaration" : {
+    "name" : "Event Type Prediction (BERT)",
+    "parameters" : [ {
+      "name" : "model_name",
+      "type" : "string",
+      "description" : "By default parameters are of type string."
+    }, {
+      "name" : "text_header_name",
+      "type" : "string",
+      "description" : "By default parameters are of type string."
+    } ],
+    "inputs" : [ {
+      "name" : "data",
+      "type" : "table"
+    } ],
+    "outputs" : [ {
+      "name" : "out",
+      "type" : "table"
+    } ]
+  },
+  "definition" : "import os\nfrom pandas import DataFrame\nfrom transformers import pipeline as tpipline\nfrom tqdm import tqdm\n\n\ndef rm_main(data, parameters):\n\tpredictions, scores = [], []\n\tmodel_path = os.path.join(os.path.dirname(os.getcwd()), \"models\", parameters[\"model_name\"]) \n\tmodel = tpipline(task=\"text-classification\", model=model_path, batch_size=512)\n\ttokenizer_kwargs = {'padding': True, 'truncation': True, 'max_length': 512}\n\tfor text in data[parameters[\"text_header_name\"]].to_list():\n\t\tpred = model(text, **tokenizer_kwargs)[0]\n\t\t\n\t\tpredictions.append(pred[\"label\"])\n\t\tscores.append(pred[\"score\"])\n\n\tdata[\"event_class\"] = predictions\n\tdata[\"event_score\"] = scores\n\n\treturn data"
+}

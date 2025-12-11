@@ -1,0 +1,14 @@
+transformers==4.52.1
+torch==2.6.0
+pandas==2.2.3
+pyflagr==1.0.14
+haystack-ai==2.14.3
+scikit-learn==1.6.1
+sentence-transformers==3.4.1
+numpy==2.2.3
+accelerate==1.4.0
+llama-cpp-python==0.3.15
+gradio==5.44.0
+plotly==6.3.0
+confluent-kafka==2.8.2
+ftfy==6.3.1

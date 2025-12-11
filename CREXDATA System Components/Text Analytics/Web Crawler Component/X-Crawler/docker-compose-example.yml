@@ -1,0 +1,23 @@
+# UNCOMMENT - To include networks if your Kafka Cluster is in the same machine
+# networks: 
+#   aihub_platform-int-net:
+#     external: true
+#   kafka_streaming:
+#     external: true
+
+services:
+  python-consumer:
+    build: .
+    container_name: text-mining-crawler-python-consumer
+    environment: # Kafka server must be configure with SASL_SSL authentication
+      KAFKA_BROKER: <KAFKA SERVER> # Ex. localhost:9092
+      KAFKA_USERNAME: <USERNAME> # username to access kafka server
+      KAFKA_PASSWORD: <PASSWORD> # password to access kafka server
+      KAFKA_SECURITY_PROTOCOL: SASL_SSL
+      KAFKA_SASL_MECHANISM: PLAIN
+    volumes:
+      - ./kafkaConnection:/crawler-app/kafkaConnection
+    command: ["python3", "/crawler-app/src/crawler_instantiator_kafka.py"]
+    # networks:
+    #   - aihub_platform-int-net
+    #   - kafka_streaming

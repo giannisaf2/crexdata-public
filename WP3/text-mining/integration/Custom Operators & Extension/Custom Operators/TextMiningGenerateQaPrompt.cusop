@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="10.5.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="10.5.000" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="python_scripting:python_transformer" compatibility="10.1.002" expanded="true" height="82" name="Generate prompt" width="90" x="447" y="85">
+        <parameter key="editable" value="true"/>
+        <parameter key="operator" value="{&#10;  &quot;name&quot;: &quot;Custom Python Transformer&quot;,&#10;  &quot;dropSpecial&quot;: false,&#10;  &quot;parameters&quot;: [&#10;    {&#10;      &quot;name&quot;: &quot;query&quot;,&#10;      &quot;type&quot;: &quot;string&quot;,&#10;      &quot;description&quot;: &quot;An example of a categorical parameter\.&quot;,&#10;      &quot;value&quot;: &quot;Tell me about the incident in the messages\.&quot;,&#10;      &quot;optional&quot;: true&#10;    },    &#10;    {&#10;      &quot;name&quot;: &quot;qa_response_language&quot;,&#10;      &quot;type&quot;: &quot;category&quot;,&#10;      &quot;description&quot;: &quot;Choose a language to receive response in\. English, Spanish, Catalan, German&quot;,&#10;      &quot;categories&quot;: [&#10;        &quot;English&quot;,&#10;        &quot;Spanish&quot;,&#10;        &quot;Catalan&quot;,&#10;        &quot;German&quot;&#10;      ],&#10;      &quot;value&quot;: &quot;English&quot;&#10;    },&#10;     {&#10;      &quot;name&quot;: &quot;summarise&quot;,&#10;      &quot;type&quot;: &quot;boolean&quot;,&#10;      &quot;description&quot;: &quot;Summarise the incident\. If True, query parameter not required\.&quot;,&#10;      &quot;value&quot;: true&#10;    }&#10;  ],&#10;  &quot;inputs&quot;: [&#10;    {&#10;      &quot;name&quot;: &quot;data&quot;,&#10;      &quot;type&quot;: &quot;table&quot;&#10;    }&#10;  ],&#10;  &quot;outputs&quot;: [&#10;    {&#10;      &quot;name&quot;: &quot;out&quot;,&#10;      &quot;type&quot;: &quot;table&quot;&#10;    },&#10;    {&#10;      &quot;name&quot;: &quot;through&quot;,&#10;      &quot;type&quot;: &quot;table&quot;&#10;    }&#10;  ]&#10;}.from pandas import DataFrame&#10;&#10;# Mandatory main function\. This example expects a single input followed by the&#10;# parameter dictionary\.&#10;def rm_main(data, parameters):&#10;&#9;template_texts = &quot;&quot;&#10;&#9;for i, text in enumerate(data['tweet_text']\.to_list()):&#10;&#9;&#9;template_texts += f'{i+1}\. {text} \\n'&#10;&#10;&#9;if parameters['summarise']:&#10;&#9;&#9;prompt = &quot;The documents below describe a developing disaster event\. &quot;+\\&#10;&#9;&#9;&#9;    &quot;Based on these documents, write a brief summary in the form of a paragraph, &quot;+\\&#10;&#9;&#9;&#9;    &quot;highlighting the most crucial information\. &quot;+\\&#10;&#9;              f&quot;Reply ONLY in {parameters['qa_response_language']} regardless of the language in the documents\.\\n&quot;+\\&#10;&#9;              f&quot;Documents: {template_texts\.strip()}&quot;&#10;&#9;else:&#10;&#9;&#9;prompt = &quot;For the following query and documents, &quot;+\\&#10;&#9;              &quot;try to answer the given query using only the documents\. &quot;+\\&#10;&#9;              &quot;If the answer is not in the documents, state that\. &quot;+\\&#10;&#9;              &quot;Refer to documents in your response using their numbers\. &quot;+\\&#10;&#9;              f&quot;Reply ONLY in {parameters['qa_response_language']} regardless of the language in the documents\. &quot;+\\&#10;&#9;              f&quot;\\nQuery:\\n{parameters['query']}\\nDocuments:\\n{template_texts\.strip()}&quot;&#10;&#9;&#9;&#10;&#9;table = DataFrame({&#10;&#9;&#9;'prompt': [prompt]&#10;&#9;})&#10;&#10;&#9;return table, data&#10;"/>
+        <parameter key="use_default_python" value="false"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+        <parameter key="conda_environment" value="rm_genai"/>
+        <parameter key="query" value="Tell me about the incident in the messages."/>
+        <parameter key="qa_response_language" value="English"/>
+        <parameter key="summarise" value="false"/>
+      </operator>
+      <connect from_port="input 1" to_op="Generate prompt" to_port="data"/>
+      <connect from_op="Generate prompt" from_port="out" to_port="result 1"/>
+      <connect from_op="Generate prompt" from_port="through" to_port="result 2"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="source_input 2" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+    </process>
+  </operator>
+  <title>Text Mining Generate QA Prompt </title>
+  <icon>notebook3.png</icon>
+  <description>This operator takes an ExampleSet containing tweets speaking about an incident, and then converts them into a prompt for LLM question answering. The prompt can be a summary of the incident or a specific query to extract information from the tweets. The prompt also includes a language for the LLM to respond in.</description>
+  <synopsis>This operator generates a prompt to use for Text Minining QA Inference.</synopsis>
+  <number-of-inputs>1</number-of-inputs>
+  <number-of-outputs>2</number-of-outputs>
+  <defines-optionals>true</defines-optionals>
+  <param-ordering>true</param-ordering>
+  <gets-random-seed>true</gets-random-seed>
+  <custom-operator-type>standard</custom-operator-type>
+  <template-parameters>
+    <template-parameter>
+      <operator>Generate prompt</operator>
+      <parameter>use_default_python</parameter>
+      <alias>use_default_python</alias>
+      <documentation>Use the default environment, as specified in the Preferences.</documentation>
+      <optional>true</optional>
+    </template-parameter>
+    <template-parameter>
+      <operator>Generate prompt</operator>
+      <parameter>package_manager</parameter>
+      <alias>package_manager</alias>
+      <documentation>Python package manager framework.</documentation>
+      <dependency>
+        <parameter-alias>use_default_python</parameter-alias>
+        <parameter-value>false</parameter-value>
+      </dependency>
+    </template-parameter>
+    <template-parameter>
+      <operator>Generate prompt</operator>
+      <parameter>conda_environment</parameter>
+      <alias>conda_environment</alias>
+      <documentation>Conda environment</documentation>
+      <dependency>
+        <parameter-alias>use_default_python</parameter-alias>
+        <parameter-value>false</parameter-value>
+      </dependency>
+    </template-parameter>
+    <template-parameter>
+      <operator>Generate prompt</operator>
+      <parameter>summarise</parameter>
+      <alias>summarise</alias>
+      <documentation>Summarise the incident. If True, query parameter not required.</documentation>
+    </template-parameter>
+    <template-parameter>
+      <operator>Generate prompt</operator>
+      <parameter>query</parameter>
+      <alias>query</alias>
+      <documentation>Query to ask about the incident in tweets.</documentation>
+      <optional>true</optional>
+      <dependency>
+        <parameter-alias>summarise</parameter-alias>
+        <parameter-value>false</parameter-value>
+      </dependency>
+    </template-parameter>
+    <template-parameter>
+      <operator>Generate prompt</operator>
+      <parameter>qa_response_language</parameter>
+      <alias>qa_response_language</alias>
+      <documentation>Choose a language to receive response in. English, Spanish, Catalan, German</documentation>
+    </template-parameter>
+  </template-parameters>
+  <input-docu>
+    <port>
+      <type>com.rapidminer.operator.IOObject</type>
+      <description>Input ExampleSet, ensure it contains attribute 'tweet_text' containing tweets for QA.</description>
+    </port>
+  </input-docu>
+  <output-docu>
+    <port>
+      <type>com.rapidminer.example.ExampleSet</type>
+      <description>Resuting ExampleSet including prompt for QA.</description>
+    </port>
+    <port>
+      <type>com.rapidminer.example.ExampleSet</type>
+      <description>Input ExampleSet.</description>
+    </port>
+  </output-docu>
+  <tutorials>
+    <tutorial>
+      <title>Unknown title</title>
+      <description/>
+      <xml/>
+    </tutorial>
+  </tutorials>
+  <input-port-names>data</input-port-names>
+  <output-port-names>output␞through</output-port-names>
+</process>

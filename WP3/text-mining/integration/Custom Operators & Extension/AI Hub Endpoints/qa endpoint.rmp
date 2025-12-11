@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="10.5.000">
+  <context>
+    <input>
+      <location>../data/testExampleSetQA</location>
+    </input>
+    <output/>
+    <macros>
+      <macro>
+        <key>model</key>
+        <value>Llama-3.2-3B-Instruct-UD-Q5_K_XL.gguf</value>
+      </macro>
+      <macro>
+        <key>temperature</key>
+        <value>0.7</value>
+      </macro>
+      <macro>
+        <key>top_k</key>
+        <value>10</value>
+      </macro>
+      <macro>
+        <key>top_p</key>
+        <value>0.95</value>
+      </macro>
+      <macro>
+        <key>min_p</key>
+        <value>0.05</value>
+      </macro>
+      <macro>
+        <key>max_tokens</key>
+        <value>4096</value>
+      </macro>
+      <macro>
+        <key>repeat_penalty</key>
+        <value>1.1</value>
+      </macro>
+    </macros>
+  </context>
+  <operator activated="true" class="process" compatibility="9.4.000" expanded="true" name="Process" origin="GENERATED_TUTORIAL">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="open_file" compatibility="10.5.000" expanded="true" height="68" name="QA LLM" width="90" x="715" y="187">
+        <parameter key="resource_type" value="repository blob entry"/>
+        <parameter key="repository_entry" value="../models/%{model}"/>
+      </operator>
+      <operator activated="true" class="python_scripting:python_transformer" compatibility="10.1.002" expanded="true" height="82" name="QA Operator (llama.cpp GGUF)" width="90" x="916" y="85">
+        <parameter key="editable" value="false"/>
+        <parameter key="operator" value="{&#13;&#10;  &quot;name&quot; : &quot;QA Operator (llama\.cpp GGUF)&quot;,&#13;&#10;  &quot;dropSpecial&quot; : true,&#13;&#10;  &quot;parameters&quot; : [ {&#13;&#10;    &quot;name&quot; : &quot;temperature&quot;,&#13;&#10;    &quot;type&quot; : &quot;string&quot;,&#13;&#10;    &quot;description&quot; : &quot;Value should be greater zero\.&quot;,&#13;&#10;    &quot;value&quot; : 0\.7,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;top_k&quot;,&#13;&#10;    &quot;type&quot; : &quot;integer&quot;,&#13;&#10;    &quot;description&quot; : &quot;Value should be greater zero&quot;,&#13;&#10;    &quot;value&quot; : 40,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;top_p&quot;,&#13;&#10;    &quot;type&quot; : &quot;string&quot;,&#13;&#10;    &quot;description&quot; : &quot;An example of a double parameter\.&quot;,&#13;&#10;    &quot;value&quot; : 0\.95,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;min_p&quot;,&#13;&#10;    &quot;type&quot; : &quot;string&quot;,&#13;&#10;    &quot;description&quot; : &quot;An example of a double parameter\.&quot;,&#13;&#10;    &quot;value&quot; : 0\.0,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;max_tokens&quot;,&#13;&#10;    &quot;type&quot; : &quot;integer&quot;,&#13;&#10;    &quot;description&quot; : &quot;Multiples of 2, larger value will allow QA to output more tokens\.&quot;,&#13;&#10;    &quot;value&quot; : 2048,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;repeat_penalty&quot;,&#13;&#10;    &quot;type&quot; : &quot;string&quot;,&#13;&#10;    &quot;description&quot; : &quot;An example of a double parameter\.&quot;,&#13;&#10;    &quot;value&quot; : 1\.1,&#13;&#10;    &quot;optional&quot; : true&#13;&#10;  } ],&#13;&#10;  &quot;inputs&quot; : [ {&#13;&#10;    &quot;name&quot; : &quot;data&quot;,&#13;&#10;    &quot;type&quot; : &quot;table&quot;&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;model&quot;,&#13;&#10;    &quot;type&quot; : &quot;file&quot;&#13;&#10;  } ],&#13;&#10;  &quot;outputs&quot; : [ {&#13;&#10;    &quot;name&quot; : &quot;out&quot;,&#13;&#10;    &quot;type&quot; : &quot;table&quot;&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;through&quot;,&#13;&#10;    &quot;type&quot; : &quot;table&quot;&#13;&#10;  } ]&#13;&#10;}.from pandas import DataFrame&#10;from llama_cpp import Llama&#10;&#10;&#10;# Mandatory main function\. This example expects a single input followed by the&#10;# parameter dictionary\.&#10;def rm_main(data, mod, parameters):&#10;&#9;responses = []&#10;&#9;model = Llama(model_path=mod\.name,n_ctx=8192,use_mmap=False) &#10;&#9;for prompt in data['prompt']\.to_list():&#10;&#9;&#9;conversation = [{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}]&#10;&#9;&#9;model\.reset()&#10;&#9;&#9;res = model\.create_chat_completion(conversation, top_k=int(parameters['top_k']), top_p=float(parameters['top_p']), min_p=float(parameters['min_p']), temperature=float(parameters['temperature']), max_tokens=int(parameters['max_tokens']), repeat_penalty=float(parameters['repeat_penalty']))&#10;&#9;&#9;qa_response = res[&quot;choices&quot;][0][&quot;message&quot;][&quot;content&quot;]&#10;&#9;&#9;responses\.append(qa_response)&#10;&#9;response = data\.copy()&#10;&#9;response['qa_response'] = responses&#10;&#9;&#10;&#9;return response, data&#10;&#10;&#10;"/>
+        <parameter key="use_default_python" value="true"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+        <parameter key="temperature" value="%{temperature}"/>
+        <parameter key="top_k" value="%{top_k}"/>
+        <parameter key="top_p" value="%{top_p}"/>
+        <parameter key="min_p" value="%{min_p}"/>
+        <parameter key="max_tokens" value="%{max_tokens}"/>
+        <parameter key="repeat_penalty" value="%{repeat_penalty}"/>
+      </operator>
+      <connect from_port="input 1" to_op="QA Operator (llama.cpp GGUF)" to_port="data"/>
+      <connect from_op="QA LLM" from_port="file" to_op="QA Operator (llama.cpp GGUF)" to_port="model"/>
+      <connect from_op="QA Operator (llama.cpp GGUF)" from_port="out" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="source_input 2" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <description align="center" color="transparent" colored="true" height="105" resized="false" width="180" x="667" y="268">LLM in GGUF format for llama cpp to perform QA tasks</description>
+    </process>
+  </operator>
+</process>

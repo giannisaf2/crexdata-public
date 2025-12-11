@@ -1,0 +1,58 @@
+{
+  "type" : "transformer",
+  "declaration" : {
+    "name" : "QA Operator (llama.cpp GGUF)",
+    "parameters" : [ {
+      "name" : "temperature",
+      "type" : "string",
+      "description" : "Value should be greater zero.",
+      "value" : 0.7,
+      "optional" : true
+    }, {
+      "name" : "top_k",
+      "type" : "integer",
+      "description" : "Value should be greater zero",
+      "value" : 40,
+      "optional" : true
+    }, {
+      "name" : "top_p",
+      "type" : "string",
+      "description" : "An example of a double parameter.",
+      "value" : 0.95,
+      "optional" : true
+    }, {
+      "name" : "min_p",
+      "type" : "string",
+      "description" : "An example of a double parameter.",
+      "value" : 0.0,
+      "optional" : true
+    }, {
+      "name" : "max_tokens",
+      "type" : "integer",
+      "description" : "Multiples of 2, larger value will allow QA to output more tokens.",
+      "value" : 2048,
+      "optional" : true
+    }, {
+      "name" : "repeat_penalty",
+      "type" : "string",
+      "description" : "An example of a double parameter.",
+      "value" : 1.1,
+      "optional" : true
+    } ],
+    "inputs" : [ {
+      "name" : "data",
+      "type" : "table"
+    }, {
+      "name" : "model",
+      "type" : "file"
+    } ],
+    "outputs" : [ {
+      "name" : "out",
+      "type" : "table"
+    }, {
+      "name" : "through",
+      "type" : "table"
+    } ]
+  },
+  "definition" : "from pandas import DataFrame\nfrom llama_cpp import Llama\n\n\n# Mandatory main function. This example expects a single input followed by the\n# parameter dictionary.\ndef rm_main(data, mod, parameters):\n\tresponses = []\n\tmodel = Llama(model_path=mod.name,n_ctx=8192,use_mmap=False) \n\tfor prompt in data['prompt'].to_list():\n\t\tconversation = [{\"role\": \"user\", \"content\": prompt}]\n\t\tmodel.reset()\n\t\tres = model.create_chat_completion(conversation, top_k=int(parameters['top_k']), top_p=float(parameters['top_p']), min_p=float(parameters['min_p']), temperature=float(parameters['temperature']), max_tokens=int(parameters['max_tokens']), repeat_penalty=float(parameters['repeat_penalty']))\n\t\tqa_response = res[\"choices\"][0][\"message\"][\"content\"]\n\t\tresponses.append(qa_response)\n\tresponse = data.copy()\n\tresponse['qa_response'] = responses\n\t\n\treturn response, data\n\n\n"
+}

@@ -1,0 +1,36 @@
+{
+  "type" : "transformer",
+  "declaration" : {
+    "name" : "Custom Python Transformer",
+    "parameters" : [ {
+      "name" : "summarise",
+      "type" : "boolean",
+      "description" : "Summarise the incident. If True, query parameter not required.",
+      "value" : true
+    }, {
+      "name" : "query",
+      "type" : "string",
+      "description" : "An example of a categorical parameter.",
+      "value" : "Tell me about the incident in the messages.",
+      "optional" : true
+    }, {
+      "name" : "qa_response_language",
+      "type" : "category",
+      "description" : "Choose a language to receive response in. English, Spanish, Catalan, German",
+      "categories" : [ "English", "Spanish", "Catalan", "German" ],
+      "value" : "English"
+    } ],
+    "inputs" : [ {
+      "name" : "data",
+      "type" : "table"
+    } ],
+    "outputs" : [ {
+      "name" : "out",
+      "type" : "table"
+    }, {
+      "name" : "through",
+      "type" : "table"
+    } ]
+  },
+  "definition" : "from pandas import DataFrame\n\n# Mandatory main function. This example expects a single input followed by the\n# parameter dictionary.\ndef rm_main(data, parameters):\n\ttemplate_texts = \"\"\n\tfor i, text in enumerate(data['tweet_text'].to_list()):\n\t\ttemplate_texts += f'{i+1}. {text} \\n'\n\n\tif parameters['summarise']:\n\t\tprompt = \"The documents below describe a developing disaster event. \"+\\\n\t\t\t    \"Based on these documents, write a brief summary in the form of a paragraph, \"+\\\n\t\t\t    \"highlighting the most crucial information. \"+\\\n\t              f\"Reply ONLY in {parameters['qa_response_language']} regardless of the language in the documents.\\n\"+\\\n\t              f\"Documents: {template_texts.strip()}\"\n\telse:\n\t\tprompt = \"For the following query and documents, \"+\\\n\t              \"try to answer the given query using only the documents. \"+\\\n\t              \"If the answer is not in the documents, state that. \"+\\\n\t              \"Refer to documents in your response using their numbers. \"+\\\n\t              f\"Reply ONLY in {parameters['qa_response_language']} regardless of the language in the documents. \"+\\\n\t              f\"\\nQuery:\\n{parameters['query']}\\nDocuments:\\n{template_texts.strip()}\"\n\t\t\n\ttable = DataFrame({\n\t\t'prompt': [prompt]\n\t})\n\n\treturn table, data\n"
+}

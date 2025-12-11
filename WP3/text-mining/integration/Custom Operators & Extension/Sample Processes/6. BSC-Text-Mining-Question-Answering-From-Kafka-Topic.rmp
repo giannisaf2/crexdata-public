@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="10.5.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="10.5.000" expanded="true" name="Process" origin="GENERATED_TUTORIAL">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="retrieve" compatibility="10.5.000" expanded="true" height="68" name="Retrieve server-crexdata-eu-no-auth" width="90" x="581" y="34">
+        <parameter key="repository_entry" value="/Connections/server-crexdata-eu-no-auth"/>
+      </operator>
+      <operator activated="true" class="kafka_connector:read_kafka_topic" compatibility="0.3.002" expanded="true" height="82" name="Read Kafka Topic" width="90" x="715" y="34">
+        <parameter key="kafka_topic" value="text_mining_test_topic_2"/>
+        <parameter key="offset_strategy" value="earliest"/>
+        <parameter key="retrieval_time_out" value="5"/>
+        <parameter key="get_all" value="true"/>
+        <parameter key="number_of_records" value="100"/>
+        <parameter key="collection_strategy" value="duration"/>
+        <parameter key="counter" value="100"/>
+        <parameter key="time_out" value="120"/>
+        <parameter key="polling_time_out" value="5"/>
+        <parameter key="api_timeout" value="10"/>
+      </operator>
+      <operator activated="true" class="open_file" compatibility="10.5.000" expanded="true" height="68" name="QA LLM" width="90" x="1117" y="136">
+        <parameter key="resource_type" value="repository blob entry"/>
+        <parameter key="repository_entry" value="../models/Llama-3.2-3B-Instruct-UD-Q5_K_XL.gguf"/>
+      </operator>
+      <operator activated="true" class="subprocess" compatibility="10.5.000" expanded="true" height="82" name="Format data" width="90" x="849" y="34">
+        <process expanded="true">
+          <operator activated="true" class="blending:select_attributes" compatibility="10.5.000" expanded="true" height="82" name="Select Attributes" width="90" x="313" y="34">
+            <parameter key="type" value="include attributes"/>
+            <parameter key="attribute_filter_type" value="one attribute"/>
+            <parameter key="select_attribute" value="value"/>
+            <parameter key="select_subset" value=""/>
+            <parameter key="also_apply_to_special_attributes_(id,_label..)" value="false"/>
+          </operator>
+          <operator activated="true" class="text:data_to_documents" compatibility="10.1.000" expanded="true" height="68" name="Data to Documents" width="90" x="447" y="34">
+            <parameter key="select_attributes_and_weights" value="false"/>
+            <list key="specify_weights"/>
+          </operator>
+          <operator activated="true" class="text:json_to_data" compatibility="10.1.000" expanded="true" height="82" name="JSON To Data" width="90" x="581" y="34">
+            <parameter key="ignore_arrays" value="false"/>
+            <parameter key="limit_attributes" value="false"/>
+            <parameter key="skip_invalid_documents" value="false"/>
+            <parameter key="guess_data_types" value="true"/>
+            <parameter key="keep_missing_attributes" value="false"/>
+            <parameter key="missing_values_aliases" value=", null, NaN, missing"/>
+            <parameter key="preserve_attribute_order" value="false"/>
+          </operator>
+          <connect from_port="in 1" to_op="Select Attributes" to_port="example set input"/>
+          <connect from_op="Select Attributes" from_port="example set output" to_op="Data to Documents" to_port="example set"/>
+          <connect from_op="Data to Documents" from_port="documents" to_op="JSON To Data" to_port="documents 1"/>
+          <connect from_op="JSON To Data" from_port="example set" to_port="out 1"/>
+          <portSpacing port="source_in 1" spacing="0"/>
+          <portSpacing port="source_in 2" spacing="0"/>
+          <portSpacing port="sink_out 1" spacing="0"/>
+          <portSpacing port="sink_out 2" spacing="0"/>
+        </process>
+        <description align="center" color="transparent" colored="false" width="126">Format records from Kafka for prediction</description>
+      </operator>
+      <operator activated="true" class="filter_examples" compatibility="10.5.000" expanded="true" height="103" name="Filter nones" width="90" x="983" y="34">
+        <parameter key="parameter_string" value="event_class != none"/>
+        <parameter key="parameter_expression" value=""/>
+        <parameter key="condition_class" value="attribute_value_filter"/>
+        <parameter key="invert_filter" value="false"/>
+        <list key="filters_list"/>
+        <parameter key="filters_logic_and" value="true"/>
+        <parameter key="filters_check_metadata" value="true"/>
+        <description align="center" color="transparent" colored="false" width="126">Filters out samples classifed as none</description>
+      </operator>
+      <operator activated="true" class="crexdata_text_mining_for_event_extraction:text_mining_generate_qa_prompt" compatibility="1.0.000" expanded="true" height="82" name="Text Mining Generate QA Prompt " width="90" x="1117" y="34">
+        <parameter key="use_default_python" value="false"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+        <parameter key="conda_environment" value="rm_genai"/>
+        <parameter key="summarise" value="false"/>
+        <parameter key="query" value="Tell me about the incident in the messages."/>
+        <parameter key="qa_response_language" value="English"/>
+      </operator>
+      <operator activated="true" class="crexdata_text_mining_for_event_extraction:text_mining_qa_inference" compatibility="1.0.000" expanded="true" height="82" name="Text Mining QA Inference" width="90" x="1251" y="34">
+        <parameter key="use_default_python" value="false"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+        <parameter key="conda_environment" value="rm_genai"/>
+        <parameter key="temperature" value="0.7"/>
+        <parameter key="top_k" value="40"/>
+        <parameter key="top_p" value="0.95"/>
+        <parameter key="min_p" value="0.0"/>
+        <parameter key="max_tokens" value="2048"/>
+        <parameter key="repeat_penalty" value="1.1"/>
+      </operator>
+      <connect from_op="Retrieve server-crexdata-eu-no-auth" from_port="output" to_op="Read Kafka Topic" to_port="connection"/>
+      <connect from_op="Read Kafka Topic" from_port="output data" to_op="Format data" to_port="in 1"/>
+      <connect from_op="QA LLM" from_port="file" to_op="Text Mining QA Inference" to_port="model"/>
+      <connect from_op="Format data" from_port="out 1" to_op="Filter nones" to_port="example set input"/>
+      <connect from_op="Filter nones" from_port="example set output" to_op="Text Mining Generate QA Prompt " to_port="data"/>
+      <connect from_op="Text Mining Generate QA Prompt " from_port="output" to_op="Text Mining QA Inference" to_port="data"/>
+      <connect from_op="Text Mining QA Inference" from_port="out" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <description align="center" color="yellow" colored="false" height="96" resized="true" width="507" x="584" y="227">Ensure Kafka Topic has tweet messages in json format with field name &amp;quot;tweet_text&amp;quot;, and event prediction field: &amp;quot;event_class&amp;quot; - fire, flood, none</description>
+    </process>
+  </operator>
+</process>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="10.5.000">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="10.5.000" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="python_scripting:python_transformer" compatibility="10.1.002" expanded="true" height="68" name="Event Type Prediction (BERT)" width="90" x="447" y="85">
+        <parameter key="editable" value="false"/>
+        <parameter key="operator" value="{&#13;&#10;  &quot;name&quot; : &quot;Event Type Prediction (BERT)&quot;,&#13;&#10;  &quot;dropSpecial&quot; : true,&#13;&#10;  &quot;parameters&quot; : [ {&#13;&#10;    &quot;name&quot; : &quot;model_name&quot;,&#13;&#10;    &quot;type&quot; : &quot;string&quot;,&#13;&#10;    &quot;description&quot; : &quot;By default parameters are of type string\.&quot;&#13;&#10;  }, {&#13;&#10;    &quot;name&quot; : &quot;text_header_name&quot;,&#13;&#10;    &quot;type&quot; : &quot;string&quot;,&#13;&#10;    &quot;description&quot; : &quot;By default parameters are of type string\.&quot;&#13;&#10;  } ],&#13;&#10;  &quot;inputs&quot; : [ {&#13;&#10;    &quot;name&quot; : &quot;data&quot;,&#13;&#10;    &quot;type&quot; : &quot;table&quot;&#13;&#10;  } ],&#13;&#10;  &quot;outputs&quot; : [ {&#13;&#10;    &quot;name&quot; : &quot;out&quot;,&#13;&#10;    &quot;type&quot; : &quot;table&quot;&#13;&#10;  } ]&#13;&#10;}.import os&#10;from pandas import DataFrame&#10;from transformers import pipeline as tpipline&#10;from tqdm import tqdm&#10;&#10;&#10;def rm_main(data, parameters):&#10;&#9;predictions, scores = [], []&#10;&#9;model_path = os\.path\.join(os\.path\.dirname(os\.getcwd()), &quot;models&quot;, parameters[&quot;model_name&quot;]) &#10;&#9;model = tpipline(task=&quot;text-classification&quot;, model=model_path, batch_size=512)&#10;&#9;tokenizer_kwargs = {'padding': True, 'truncation': True, 'max_length': 512}&#10;&#9;for text in data[parameters[&quot;text_header_name&quot;]]\.to_list():&#10;&#9;&#9;pred = model(text, **tokenizer_kwargs)[0]&#10;&#9;&#9;&#10;&#9;&#9;predictions\.append(pred[&quot;label&quot;])&#10;&#9;&#9;scores\.append(pred[&quot;score&quot;])&#10;&#10;&#9;data[&quot;event_class&quot;] = predictions&#10;&#9;data[&quot;event_score&quot;] = scores&#10;&#10;&#9;return data"/>
+        <parameter key="use_default_python" value="false"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+        <parameter key="conda_environment" value="rm_genai"/>
+      </operator>
+      <connect from_port="input 1" to_op="Event Type Prediction (BERT)" to_port="data"/>
+      <connect from_op="Event Type Prediction (BERT)" from_port="out" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="source_input 2" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>

@@ -59,5 +59,5 @@ python generate_tweets.py --language English --crisis-type flood --prompt-type w
 
 ## License
 
-Apache 2.0
+This work is distributed under a [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 

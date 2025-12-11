@@ -1,0 +1,6 @@
+transformers==4.52.1
+pandas==2.2.3
+pyflagr==1.0.14
+haystack-ai==2.14.3
+sentence-transformers==3.4.1
+numpy==2.2.3

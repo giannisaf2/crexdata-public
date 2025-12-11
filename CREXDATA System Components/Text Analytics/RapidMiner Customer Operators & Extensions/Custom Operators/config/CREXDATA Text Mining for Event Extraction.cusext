@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><root>
+  <name>CREXDATA Text Mining for Event Extraction</name>
+  <vendor/>
+  <homepage/>
+  <folder>//bsctext/CustomOperators/</folder>
+  <objects_folder/>
+  <color>0,204,204</color>
+  <version>1.0.0</version>
+  <jars/>
+  <icons/>
+  <calculate_deps>true</calculate_deps>
+  <icon/>
+  <hide_processes>false</hide_processes>
+</root>
