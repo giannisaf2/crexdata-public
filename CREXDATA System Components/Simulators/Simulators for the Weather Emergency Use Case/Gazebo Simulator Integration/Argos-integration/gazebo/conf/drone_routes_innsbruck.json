@@ -1,0 +1,14 @@
+{
+    "general": {
+        "log_file": "/app/logs/crexdata/drones/drone_routes_innsbruck.log",
+        "input_dir": "/app/exchange/crexdata/drones/innsbruck",
+        "domain": "Innsbruck"
+    },
+    "products": [
+        {
+            "variable": "gazebo_routes",
+            "type": "drone",
+            "supplier": "crexdata"
+        }
+    ]
+}
