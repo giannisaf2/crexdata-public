@@ -21,5 +21,5 @@ Contains sample RapidMiner processes and RapidMiner AI Hub and custom operators.
     - *Custom Operators*
     - *Text Processing*
     - *Operator Toolbox*
-  - rm-genai python environment (follow [instructions](https://docs.rapidminer.com/2024.1/studio/generative-ai/index.html)), and then setup conda enviroment with rm_genai.yml provided in *./aihub*.
+  - rm-genai python environment (follow [instructions](https://docs.rapidminer.com/2024.1/studio/generative-ai/index.html)), and then setup conda enviroment with rm_genai.yml.
 
