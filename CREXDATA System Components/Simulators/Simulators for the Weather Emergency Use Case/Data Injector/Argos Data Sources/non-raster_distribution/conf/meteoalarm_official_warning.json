@@ -1,0 +1,54 @@
+{
+    "general": {
+        "log_file": "/app/logs/crexdata/non-raster_distribution/meteoalarm_official_warning.log",
+        "is_warning": true,
+
+        "distribution_info_folder": "/app/exchange/crexdata/data-distribution"
+    },
+    "element_codes": [
+        "AT701",
+        "AT703"
+    ],
+    "input_products": [
+        {
+            "variable": "thunderstorm",
+            "type": "official_warning",
+            "supplier": "meteoalarm",
+
+            "kafka_topic": "hyds-official-warnings",
+            "description": ""
+        },
+        {
+            "variable": "rain",
+            "type": "official_warning",
+            "supplier": "meteoalarm",
+
+            "kafka_topic": "hyds-official-warnings",
+            "description": ""
+        },
+        {
+            "variable": "high_temperature",
+            "type": "official_warning",
+            "supplier": "meteoalarm",
+
+            "kafka_topic": "hyds-official-warnings",
+            "description": ""
+        },
+        {
+            "variable": "forest_fire",
+            "type": "official_warning",
+            "supplier": "meteoalarm",
+
+            "kafka_topic": "hyds-official-warnings",
+            "description": ""
+        },
+        {
+            "variable": "wind",
+            "type": "official_warning",
+            "supplier": "meteoalarm",
+
+            "kafka_topic": "hyds-official-warnings",
+            "description": ""
+        }
+    ]
+}

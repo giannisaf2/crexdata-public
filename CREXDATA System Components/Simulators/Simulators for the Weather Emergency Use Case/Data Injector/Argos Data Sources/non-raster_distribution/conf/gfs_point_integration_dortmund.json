@@ -1,0 +1,36 @@
+{
+    "general": {
+        "log_file": "/app/logs/crexdata/non-raster_distribution/gfs_point_integration_dortmund.log",
+
+        "distribution_info_folder": "/app/exchange/crexdata/data-distribution"
+    },
+    "element_codes": [
+        "Dortmund_pi"
+    ],
+    "input_products": [
+        {
+            "variable": "precipitation",
+            "type": "point_integration",
+            "supplier": "gfs",
+
+            "kafka_topic": "UPB-CREXDATA-Weather-Stream-Dortmund",
+            "description": ""
+        },
+        {
+            "variable": "wind_speed",
+            "type": "point_integration",
+            "supplier": "gfs",
+
+            "kafka_topic": "UPB-CREXDATA-Weather-Stream-Dortmund",
+            "description": ""
+        },
+        {
+            "variable": "wind_direction",
+            "type": "point_integration",
+            "supplier": "gfs",
+
+            "kafka_topic": "UPB-CREXDATA-Weather-Stream-Dortmund",
+            "description": ""
+        }
+    ]
+}

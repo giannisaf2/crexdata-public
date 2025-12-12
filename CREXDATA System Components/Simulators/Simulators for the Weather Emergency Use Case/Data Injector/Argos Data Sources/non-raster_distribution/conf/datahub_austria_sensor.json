@@ -1,0 +1,25 @@
+{
+    "general": {
+        "log_file": "/app/logs/crexdata/non-raster_distribution/datahub_austria_sensor.log",
+
+        "distribution_info_folder": "/app/exchange/crexdata/data-distribution"
+    },
+    "input_products": [
+        {
+            "variable": "water_level",
+            "type": "sensor",
+            "supplier": "datahub_austria",
+
+            "kafka_topic": "hyds-Rivergauges-DataHub-Austria",
+            "description": "Water level data from the Department of Hydrography and Hydrology of the State of Tyrol (HYDRO Tyrol) accessed through Datahub Austria."
+        },
+        {
+            "variable": "precipitation",
+            "type": "sensor",
+            "supplier": "datahub_austria",
+
+            "kafka_topic": "hyds-Raingauges-DataHub-Austria",
+            "description": "Precipitation data from the Department of Hydrography and Hydrology of the State of Tyrol (HYDRO Tyrol) accessed through Datahub Austria."
+        }
+    ]
+}
