@@ -1,0 +1,1 @@
+The most up-to-date version of this repository can be found at: https://github.com/psklavos1/NeRF-Sys
