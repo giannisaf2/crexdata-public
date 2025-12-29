@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="10.4.001">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="10.4.001" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="utility:create_exampleset" compatibility="10.4.001" expanded="true" height="68" name="Create ExampleSet" width="90" x="45" y="85">
+        <parameter key="generator_type" value="attribute functions"/>
+        <parameter key="number_of_examples" value="100"/>
+        <parameter key="use_stepsize" value="false"/>
+        <list key="function_descriptions">
+          <parameter key="a" value="TRUE"/>
+        </list>
+        <parameter key="add_id_attribute" value="false"/>
+        <list key="numeric_series_configuration"/>
+        <list key="date_series_configuration"/>
+        <list key="date_series_configuration (interval)"/>
+        <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
+        <parameter key="time_zone" value="SYSTEM"/>
+        <parameter key="column_separator" value=","/>
+        <parameter key="parse_all_as_nominal" value="false"/>
+        <parameter key="decimal_point_character" value="."/>
+        <parameter key="trim_attribute_names" value="true"/>
+      </operator>
+      <operator activated="true" class="python_scripting:python_transformer" compatibility="10.1.002" expanded="true" height="82" name="Create XML" width="90" x="313" y="85">
+        <parameter key="editable" value="true"/>
+        <parameter key="operator" value="{&#10;  &quot;name&quot;: &quot;Custom Python Transformer&quot;,&#10;  &quot;dropSpecial&quot;: false,&#10;  &quot;parameters&quot;: [&#10;       {&#10;      &quot;name&quot;: &quot;vaccinated&quot;,&#10;      &quot;type&quot;: &quot;category&quot;,&#10;      &quot;description&quot;: &quot;An example of a categorical parameter\.&quot;,&#10;      &quot;categories&quot;: [&#10;        &quot;fully_vaccinated&quot;,&#10;        &quot;mildly_vaccinated&quot;,&#10;        &quot;non_vaccinated&quot;&#10;      ],&#10;      &quot;value&quot;: &quot;fully_vaccinated&quot;&#10;    },&#10;    {&#10;      &quot;name&quot;: &quot;multiplicity_of_infection&quot;,&#10;      &quot;type&quot;: &quot;integer&quot;,&#10;      &quot;description&quot;: &quot;This is an example of an mandatory integer parameter with a default value 100\.&quot;,&#10;      &quot;value&quot;: 1&#10;    },&#10;    {&#10;      &quot;name&quot;: &quot;patient_type&quot;,&#10;      &quot;type&quot;: &quot;category&quot;,&#10;      &quot;description&quot;: &quot;An example of a categorical parameter\.&quot;,&#10;      &quot;categories&quot;: [&#10;&#9;&#9;&quot;Mild&quot;,&#10;&#9;&#9;&quot;Severe&quot;,&#10;&#9;&#9;&quot;Wild Type&quot;,&#10;&#9;&#9;&quot;Mild KO&quot;,&#10;&#9;&#9;&quot;Severe KO&quot;,&#10;&#9;&#9;&quot;Wild Type KO&quot;,&#10;&#9;&#9;&quot;Mild FADDKO&quot;,&#10;&#9;&#9;&quot;Severe FADDKO&quot;,&#10;&#9;&#9;&quot;Wild Type FADDKO&quot;,&#10;&#9;&#9;&quot;Mild P38KO&quot;,&#10;&#9;&#9;&quot;Severe P38KO&quot;,&#10;&#9;&#9;&quot;Wild Type P38KO&quot;&#10;      ],&#10;      &quot;value&quot;: &quot;Wild Type&quot;&#10;    }&#10;  ],&#10;  &quot;inputs&quot;: [&#10;    {&#10;      &quot;name&quot;: &quot;data&quot;,&#10;      &quot;type&quot;: &quot;table&quot;&#10;    }&#10;  ],&#10;  &quot;outputs&quot;: [&#10;    {&#10;      &quot;name&quot;: &quot;out&quot;,&#10;      &quot;type&quot;: &quot;table&quot;&#10;    },&#10;    {&#10;      &quot;name&quot;: &quot;through&quot;,&#10;      &quot;type&quot;: &quot;table&quot;&#10;    }&#10;  ]&#10;}.import xml\.etree\.ElementTree as ET&#10;from pandas import DataFrame&#10;import subprocess&#10;import os&#10;vaccinated_scenarios = {&#10;        'fully_vaccinated': {&#10;            'number_of_CD8_Tcells': 100,&#10;            'number_of_CD4_Tcells': 100,&#10;            'number_of_DCs': 50,&#10;            'BN_init': 5000,&#10;            'Ig_init': 1000,&#10;            'Ig_recuitment': 5,&#10;            'Ig_degradation': 0\.0005,&#10;            'Ig_neutralization_rate': 10,&#10;            'BCell_activation': 0\.01,&#10;            'BCell_DC_proliferation': 0\.01,&#10;            'PCell_recuitment': 0\.001,&#10;            'TC_activation': 0\.01,&#10;            'DC_induced_CD8_proliferation': 0\.01,&#10;            'max_activation_TC': 0\.01,&#10;            'DC_leave_prob': 0\.00001,&#10;            'virions_needed_for_DC_activation': 5,&#10;            'interferon_secretion_rate_via_infection': 0\.1,&#10;            'activated_cytokine_secretion_rate': 20,&#10;        },&#10;        'mildly_vaccinated': {&#10;            'number_of_CD8_Tcells': 50,&#10;            'number_of_CD4_Tcells': 50,&#10;            'number_of_DCs': 30,&#10;            'BN_init': 2500,&#10;            'Ig_init': 500,&#10;            'Ig_recuitment': 2,&#10;            'Ig_degradation': 0\.0008,&#10;            'Ig_neutralization_rate': 5,&#10;            'BCell_activation': 0\.005,&#10;            'BCell_DC_proliferation': 0\.005,&#10;            'PCell_recuitment': 0\.0005,&#10;            'TC_activation': 0\.005,&#10;            'DC_induced_CD8_proliferation': 0\.005,&#10;            'max_activation_TC': 0\.005,&#10;            'DC_leave_prob': 0\.00002,&#10;            'virions_needed_for_DC_activation': 7,&#10;            'interferon_secretion_rate_via_infection': 0\.05,&#10;            'activated_cytokine_secretion_rate': 10,&#10;        },&#10;        'non_vaccinated': {&#10;            'number_of_CD8_Tcells': 0,&#10;            'number_of_CD4_Tcells': 0,&#10;            'number_of_DCs': 28,&#10;            'BN_init': 1000,&#10;            'Ig_init': 0,&#10;            'Ig_recuitment': 1,&#10;            'Ig_degradation': 0\.00139,&#10;            'Ig_neutralization_rate': 3,&#10;            'BCell_activation': 0\.0021,&#10;            'BCell_DC_proliferation': 0\.002,&#10;            'PCell_recuitment': 0\.0002,&#10;            'TC_activation': 0\.001,&#10;            'DC_induced_CD8_proliferation': 0\.00208,&#10;            'max_activation_TC': 0\.0018,&#10;            'DC_leave_prob': 0\.000033,&#10;            'virions_needed_for_DC_activation': 10,&#10;            'interferon_secretion_rate_via_infection': 0\.01,&#10;            'activated_cytokine_secretion_rate': 10,&#10;        }&#10;    }&#10;def modify_xml(xml_path, output_path, patient_type=None,vaccinated = False,virus=0):&#10;    tree = ET\.parse(xml_path)&#10;    root = tree\.getroot()&#10;    &#10;    # Define model mappings based on patient type&#10;    model_mappings = {&#10;        &quot;Mild&quot;: [&quot;epithelial_cell_C141&quot;, &quot;macrophage_C141&quot;],&#10;        &quot;Severe&quot;: [&quot;epithelial_cell_C143&quot;, &quot;macrophage_C143&quot;],&#10;        &quot;Wild Type&quot;: [&quot;epithelial_cell_2025&quot;, &quot;macrophage_2025&quot;],&#10;        &quot;Mild KO&quot;: [&quot;epithelial_cell_C141_FADDko&quot;, &quot;macrophage_C141_p38ko&quot;],&#10;        &quot;Severe KO&quot;: [&quot;epithelial_cell_C143_FADDko&quot;, &quot;macrophage_C143_p38ko&quot;],&#10;        &quot;Wild Type KO&quot;: [&quot;epithelial_cell_2025_FADDko&quot;, &quot;macrophage_2025_p38ko&quot;],&#10;        &quot;Mild FADDKO&quot;: [&quot;epithelial_cell_C141_FADDko&quot;, &quot;macrophage_C141&quot;],&#10;        &quot;Severe FADDKO&quot;: [&quot;epithelial_cell_C143_FADDko&quot;, &quot;macrophage_C143&quot;],&#10;        &quot;Wild Type FADDKO&quot;: [&quot;epithelial_cell_2025_FADDko&quot;, &quot;macrophage_2025&quot;],&#10;        &quot;Mild P38KO&quot;: [&quot;epithelial_cell_C141&quot;, &quot;macrophage_C141&quot;],&#10;        &quot;Severe P38KO&quot;: [&quot;epithelial_cell_C143&quot;, &quot;macrophage_C143&quot;],&#10;        &quot;Wild Type P38KO&quot;: [&quot;epithelial_cell_2025&quot;, &quot;macrophage_2025&quot;]&#10;    }&#10;    &#10;    if patient_type in model_mappings:&#10;        print(patient_type)&#10;        selected_models = model_mappings[patient_type]&#10;        &#10;        for cell_definition in root\.findall(&quot;\.//cell_definition[@name='lung epithelium']&quot;):&#10;            intracellular = cell_definition\.find(&quot;\.//intracellular&quot;)&#10;    &#10;            if intracellular is not None:&#10;                cfg_filename = intracellular\.find('cfg_filename')&#10;                if cfg_filename is not None:&#10;                    cfg_filename\.text = '\./config/boolean_network/' + selected_models[0] + '\.cfg'  # New filename path&#10;        for cell_definition in root\.findall(&quot;\.//cell_definition[@name='macrophage']&quot;):&#10;            intracellular = cell_definition\.find(&quot;\.//intracellular&quot;)&#10;    &#10;            if intracellular is not None:&#10;                cfg_filename = intracellular\.find('cfg_filename')&#10;                if cfg_filename is not None:&#10;                    cfg_filename\.text = '\./config/boolean_network/' + selected_models[1] + '\.cfg'  # New filename path&#10;    multiplicity_element = root\.find(&quot;\.//user_parameters//multiplicity_of_infection&quot;)&#10;    if multiplicity_element is not None:&#10;        &#10;        print(&quot;mpika&quot;)&#10;        multiplicity_element\.text = str(virus)  # Set the new value (convert virus to string if necessary)&#10;    for param, value in vaccinated_scenarios[vaccinated]\.items():&#10;        user_params = root\.find(&quot;\.//user_parameters&quot;)&#10;        elem = user_params\.find(param)&#10;        if elem is not None:&#10;            elem\.text = str(value)&#10;        else:&#10;            for cell_definition in root\.findall(&quot;\.//cell_definition[@name='default']&quot;):&#10;                custom = cell_definition\.find(&quot;\.//custom_data&quot;)&#10;                elem =custom\.find(param)&#10;                if elem is not None:&#10;                    elem\.text = str(value)&#10;                else:&#10;                    print(f&quot;Warning: Parameter '{param}' not found in XML\.&quot;)&#10;            &#10;    # user_parameters//div_initialization//multiplicity_of_infection&#10;    # Save modified XML&#10;    tree\.write(output_path)&#10;    # return tree &#10;    print(f&quot;Modified XML saved to {output_path}&quot;)&#10;&#10;&#10;# Example usage&#10;&#10;&#10;# Mandatory main function\. This example expects a single input followed by the&#10;# parameter dictionary\.&#10;def rm_main(data,parameters):&#10;&#9;# Create a new data frame containing parameters\.&#10;    # table = DataFrame({&#10;    #     'Key': list(parameters\.keys()),&#10;    #     'Value': list(parameters\.values())&#10;    # })&#10;    # print(table[&quot;parameters&quot;])/&#10;    print(os\.getcwd())&#10;    print(parameters['patient_type'])&#10;    file = os\.getcwd() + &quot;/output/input\.xml&quot;&#10;    modify_xml(&quot;\./PhysiCell_Code/config/local_generic\.xml&quot;, file, patient_type = parameters['patient_type'], vaccinated=parameters[&quot;vaccinated&quot;], virus=parameters[&quot;multiplicity_of_infection&quot;])&#10;    print(f&quot;{file} file to be saved&quot;)&#10;    #run(file)&#10;    print(f&quot;{data} data to be returned&quot;)&#10;&#9;# Return the new data frame and pass through the input data\.&#10;    return data,file&#10;    &#10;    &#10;"/>
+        <parameter key="use_default_python" value="true"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+        <parameter key="vaccinated" value="non_vaccinated"/>
+        <parameter key="multiplicity_of_infection" value="10"/>
+        <parameter key="patient_type" value="Mild"/>
+      </operator>
+      <operator activated="true" class="set_macros" compatibility="10.4.001" expanded="true" height="82" name="Set Macros" width="90" x="447" y="187">
+        <list key="macros">
+          <parameter key="vm_user" value="ubuntu"/>
+          <parameter key="vm_host" value="212.128.226.50"/>
+          <parameter key="vm_pri" value="~/.ssh/vim_pri"/>
+          <parameter key="job_id" value="covid_$((RANDOM))"/>
+          <parameter key="mn5_user" value="bsc008602"/>
+          <parameter key="mn5_host" value="glogin1.bsc.es"/>
+          <parameter key="mn5_base" value="/gpfs/scratch/bsc08/bsc008602/ALYA_PB/pipeline"/>
+          <parameter key="vm_in_dir" value="/home/ubuntu/single_simulation"/>
+        </list>
+      </operator>
+      <operator activated="true" class="productivity:execute_program" compatibility="10.4.001" expanded="true" height="124" name="Execute Program" width="90" x="648" y="85">
+        <parameter key="command" value="ssh -i /home/tntiniak/.ssh/vim_pri ubuntu@212.128.226.50 mkdir -p %{vm_in_dir}/%{job_id}"/>
+        <parameter key="log_stdout" value="true"/>
+        <parameter key="log_stderr" value="true"/>
+        <list key="env_variables"/>
+      </operator>
+      <operator activated="true" class="productivity:execute_program" compatibility="10.4.001" expanded="true" height="124" name="Execute Program (2)" width="90" x="782" y="136">
+        <parameter key="command" value="scp -i /home/tntiniak/.ssh/vim_pri workflows/BSC/multiscale_modelling/output/input.xml ubuntu@212.128.226.50:%{vm_in_dir}/settings.xml "/>
+        <parameter key="log_stdout" value="true"/>
+        <parameter key="log_stderr" value="true"/>
+        <parameter key="working_directory" value="/home/tntiniak/Documents/AltairRapidMiner/AI Studio/Projects/CREXDATA"/>
+        <list key="env_variables"/>
+      </operator>
+      <operator activated="true" class="productivity:execute_program" compatibility="10.4.001" expanded="true" height="103" name="Execute Program (3)" width="90" x="916" y="136">
+        <parameter key="command" value="ssh -i /home/tntiniak/.ssh/vim_pri %{vm_user}@%{vm_host} %{vm_in_dir}/process.sh %{vm_in_dir}/settings.xml %{job_id} "/>
+        <parameter key="log_stdout" value="true"/>
+        <parameter key="log_stderr" value="true"/>
+        <list key="env_variables"/>
+      </operator>
+      <connect from_op="Create ExampleSet" from_port="output" to_op="Create XML" to_port="data"/>
+      <connect from_op="Create XML" from_port="through" to_op="Set Macros" to_port="through 1"/>
+      <connect from_op="Set Macros" from_port="through 1" to_op="Execute Program" to_port="through 1"/>
+      <connect from_op="Execute Program" from_port="err" to_port="result 1"/>
+      <connect from_op="Execute Program" from_port="through 1" to_op="Execute Program (2)" to_port="through 1"/>
+      <connect from_op="Execute Program (2)" from_port="err" to_port="result 2"/>
+      <connect from_op="Execute Program (3)" from_port="err" to_port="result 3"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+      <portSpacing port="sink_result 4" spacing="0"/>
+      <description align="left" color="yellow" colored="false" height="319" resized="true" width="474" x="296" y="320">Initiates a Pb Alya-loop in Marenostrum</description>
+    </process>
+  </operator>
+</process>

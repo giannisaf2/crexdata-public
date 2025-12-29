@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="10.4.001">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="10.4.001" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="utility:create_exampleset" compatibility="10.4.001" expanded="true" height="68" name="Runtime Adaptation Variables" width="90" x="313" y="85">
+        <parameter key="generator_type" value="attribute functions"/>
+        <parameter key="number_of_examples" value="100"/>
+        <parameter key="use_stepsize" value="false"/>
+        <list key="function_descriptions">
+          <parameter key="user_parameters.macrophage_max_recruitment_rate" value="2e-8"/>
+          <parameter key="activated_cytokine_secretion_rate" value="25"/>
+          <parameter key="T_Cell_Recruitment" value="0.01"/>
+        </list>
+        <parameter key="add_id_attribute" value="false"/>
+        <list key="numeric_series_configuration"/>
+        <list key="date_series_configuration"/>
+        <list key="date_series_configuration (interval)"/>
+        <parameter key="date_format" value="yyyy-MM-dd HH:mm:ss"/>
+        <parameter key="time_zone" value="SYSTEM"/>
+        <parameter key="column_separator" value=","/>
+        <parameter key="parse_all_as_nominal" value="false"/>
+        <parameter key="decimal_point_character" value="."/>
+        <parameter key="trim_attribute_names" value="true"/>
+      </operator>
+      <operator activated="true" class="retrieve" compatibility="10.4.001" expanded="true" height="68" name="Retrieve CREXDATA platform cluster - 9094 (2)" width="90" x="112" y="187">
+        <parameter key="repository_entry" value="/Connections/kafka_new"/>
+      </operator>
+      <operator activated="true" class="multiply" compatibility="10.4.001" expanded="true" height="103" name="Multiply (2)" width="90" x="313" y="187"/>
+      <operator activated="true" class="kafka_connector:read_kafka_topic" compatibility="0.4.000" expanded="true" height="82" name="Read Kafka Topic" width="90" x="514" y="187">
+        <parameter key="kafka_topic" value="pb_results"/>
+        <parameter key="offset_strategy" value="earliest"/>
+        <parameter key="retrieval_time_out" value="10"/>
+        <parameter key="get_all" value="true"/>
+        <parameter key="number_of_records" value="100"/>
+        <parameter key="collection_strategy" value="duration"/>
+        <parameter key="counter" value="100"/>
+        <parameter key="time_out" value="120"/>
+        <parameter key="polling_time_out" value="5"/>
+        <parameter key="api_timeout" value="10000"/>
+      </operator>
+      <operator activated="true" class="extract_macro" compatibility="10.4.001" expanded="true" height="68" name="Extract Macro" width="90" x="648" y="187">
+        <parameter key="macro" value="e"/>
+        <parameter key="macro_type" value="number_of_examples"/>
+        <parameter key="statistics" value="average"/>
+        <parameter key="attribute_name" value=""/>
+        <list key="additional_macros"/>
+      </operator>
+      <operator activated="true" class="generate_macro" compatibility="10.4.001" expanded="true" height="82" name="Generate Macro" width="90" x="782" y="289">
+        <list key="function_descriptions">
+          <parameter key="e2" value="eval(%{e})-10"/>
+        </list>
+      </operator>
+      <operator activated="true" class="filter_example_range" compatibility="10.4.001" expanded="true" height="82" name="Filter Example Range" width="90" x="849" y="187">
+        <parameter key="first_example" value="%{e2}"/>
+        <parameter key="last_example" value="%{e}"/>
+        <parameter key="invert_filter" value="false"/>
+      </operator>
+      <operator activated="true" class="kafka_connector:write_kafka_topic" compatibility="0.4.000" expanded="true" height="82" name="Write Kafka Topic" width="90" x="514" y="85">
+        <parameter key="kafka_topic" value="thalia_test_local"/>
+        <parameter key="attribute_separator" value=";"/>
+        <parameter key="bulk_sending" value="false"/>
+        <parameter key="message_interval" value="1"/>
+        <parameter key="message_format" value="JSON"/>
+        <parameter key="api_timeout" value="5000"/>
+      </operator>
+      <connect from_op="Runtime Adaptation Variables" from_port="output" to_op="Write Kafka Topic" to_port="input"/>
+      <connect from_op="Retrieve CREXDATA platform cluster - 9094 (2)" from_port="output" to_op="Multiply (2)" to_port="input"/>
+      <connect from_op="Multiply (2)" from_port="output 1" to_op="Write Kafka Topic" to_port="connection"/>
+      <connect from_op="Multiply (2)" from_port="output 2" to_op="Read Kafka Topic" to_port="connection"/>
+      <connect from_op="Read Kafka Topic" from_port="output data" to_op="Extract Macro" to_port="example set"/>
+      <connect from_op="Extract Macro" from_port="example set" to_op="Generate Macro" to_port="through 1"/>
+      <connect from_op="Filter Example Range" from_port="example set output" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>

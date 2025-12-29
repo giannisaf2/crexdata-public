@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><process version="10.4.001">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="10.4.001" expanded="true" name="Process">
+    <parameter key="logverbosity" value="init"/>
+    <parameter key="random_seed" value="2001"/>
+    <parameter key="send_mail" value="never"/>
+    <parameter key="notification_email" value=""/>
+    <parameter key="process_duration_for_mail" value="30"/>
+    <parameter key="encoding" value="SYSTEM"/>
+    <process expanded="true">
+      <operator activated="true" class="retrieve" compatibility="10.4.001" expanded="true" height="68" name="Retrieve CREXDATA platform cluster - 9094 (2)" width="90" x="112" y="289">
+        <parameter key="repository_entry" value="//CREXDATA/Connections/CREXDATA platform cluster - 9094"/>
+      </operator>
+      <operator activated="true" class="python_scripting:python_transformer" compatibility="10.1.002" expanded="true" height="68" name="Python Transformer" width="90" x="313" y="85">
+        <parameter key="editable" value="true"/>
+        <parameter key="operator" value="{&#10;  &quot;name&quot;: &quot;Custom Python Transformer&quot;,&#10;  &quot;dropSpecial&quot;: false,&#10;  &quot;parameters&quot;: [&#10;    {&#10;      &quot;name&quot;: &quot;GK MAPK14&quot;,&#10;      &quot;type&quot;: &quot;string&quot;,&#10;      &quot;description&quot;: &quot;Knock out Gene MAPK14?&quot;,&#10;      &quot;value&quot;: true&#10;    },&#10;    {&#10;      &quot;name&quot;: &quot;GK FADD&quot;,&#10;      &quot;type&quot;: &quot;string&quot;,&#10;      &quot;description&quot;: &quot;Knock out Gene FADD&quot;,&#10;      &quot;value&quot;: true&#10;    },&#10;    {&#10;      &quot;name&quot;: &quot;GK P38&quot;,&#10;      &quot;type&quot;: &quot;string&quot;,&#10;      &quot;description&quot;: &quot;Knock out Gene P38&quot;,&#10;      &quot;value&quot;: true&#10;    },&#10;    {&#10;      &quot;name&quot;: &quot;GK AKT1&quot;,&#10;      &quot;type&quot;: &quot;string&quot;,&#10;      &quot;description&quot;: &quot;Knock out Gene AKT1&quot;,&#10;      &quot;value&quot;: true&#10;    }&#10;  ],&#10;  &quot;outputs&quot;: [&#10;    {&#10;      &quot;name&quot;: &quot;out&quot;,&#10;      &quot;type&quot;: &quot;table&quot;&#10;    }&#10;  ]&#10;}.from pandas import DataFrame&#10;import json&#10;# Mandatory main function\. This example expects a single input followed by the&#10;# parameter dictionary\.&#10;def rm_main(parameters):&#10;&#9;# Create a new data frame containing parameters\.&#10;&#9;table = DataFrame({&#10;&#9;&#9;'Key': list(parameters\.keys()),&#10;&#9;&#9;'Value': list(parameters\.values())&#10;&#9;})&#10;&#9;knockouts = table\.loc[table['Value']\.astype(str)\.str\.lower() == &quot;true&quot;, 'Key']\.tolist()&#10;&#9;msg = {&quot;knockouts&quot;: knockouts}&#10;&#10;&#9;# Return the new data frame and pass through the input data\.&#10;&#9;&#10;&#9;return DataFrame([{&quot;json_message&quot;: json\.dumps(msg)}])&#10;"/>
+        <parameter key="use_default_python" value="true"/>
+        <parameter key="package_manager" value="conda (anaconda)"/>
+        <parameter key="GK MAPK14" value="true"/>
+        <parameter key="GK FADD" value="false"/>
+        <parameter key="GK P38" value="true"/>
+        <parameter key="GK AKT1" value="false"/>
+      </operator>
+      <operator activated="true" class="kafka_connector:write_kafka_topic" compatibility="0.4.000" expanded="true" height="82" name="Write Kafka Topic" width="90" x="782" y="238">
+        <parameter key="kafka_topic" value="pb_drug"/>
+        <parameter key="attribute_separator" value=";"/>
+        <parameter key="bulk_sending" value="false"/>
+        <parameter key="message_interval" value="1"/>
+        <parameter key="message_format" value="JSON"/>
+        <parameter key="api_timeout" value="5000"/>
+      </operator>
+      <connect from_op="Retrieve CREXDATA platform cluster - 9094 (2)" from_port="output" to_op="Write Kafka Topic" to_port="connection"/>
+      <connect from_op="Python Transformer" from_port="out" to_op="Write Kafka Topic" to_port="input"/>
+      <connect from_op="Write Kafka Topic" from_port="connection" to_port="result 1"/>
+      <connect from_op="Write Kafka Topic" from_port="throughput" to_port="result 2"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+      <portSpacing port="sink_result 3" spacing="0"/>
+    </process>
+  </operator>
+</process>
