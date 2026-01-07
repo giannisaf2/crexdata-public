@@ -25,3 +25,9 @@
 [submodule "CREXDATA System Components/odm_kafka_bridge (DRZ)"]
 	path = CREXDATA System Components/odm_kafka_bridge (DRZ)
 	url = https://github.com/rettungsrobotik/odm_kafka_bridge
+[submodule "CREXDATA System Components/Multi-Modal Data Fusion Toolbox/mmdf-kstreams"]
+	path = CREXDATA System Components/Multi-Modal Data Fusion Toolbox/mmdf-kstreams
+	url = https://github.com/ITSLab-UAegean/mmdf-kstreams.git
+[submodule "CREXDATA System Components/Multi-Modal Data Fusion Toolbox/mmdf-rm-extension"]
+	path = CREXDATA System Components/Multi-Modal Data Fusion Toolbox/mmdf-rm-extension
+	url = https://github.com/ITSLab-UAegean/mmdf-rm-extension.git
